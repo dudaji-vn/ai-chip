@@ -19,3 +19,10 @@ Npm: ```v.9.6.7```
 ``` yarn build ```
 
 ``` yarn start ```
+
+### Icons
+```https://github.com/tailwindlabs/heroicons```
+
+```https://heroicons.com/```
+
+- Icons use an upper camel case naming convention and are always suffixed with the word Icon.

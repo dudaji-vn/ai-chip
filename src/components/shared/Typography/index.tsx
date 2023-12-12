@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
     tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p',
@@ -19,6 +19,6 @@ export default function Typography({ tag = 'p', size = 'md', className, children
         '4xl'   : 'text-4xl font-semibold leading-normal',
     }
     return (
-        <Tag className={`${sizes[size]} ${className}`} {...props}>{children}</Tag>
+        <Tag className={twMerge(sizes[size], className)} {...props}>{children}</Tag>
     )
 }

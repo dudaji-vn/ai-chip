@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+export const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'AI - Chip',
@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className='bg-gray-900 text-white '>
-          <main className="max-w-[1440px] mx-auto min-h-screen">
+          <main className="max-w-[1440px] mx-auto min-h-screen p-4">
             {children}
           </main>
         </div>
