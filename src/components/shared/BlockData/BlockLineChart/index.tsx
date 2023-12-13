@@ -14,16 +14,7 @@ export default function BlockLineChart() {
             };
         })
     }
-    const generateColorsStroke = (data: Series[]) => {
-        let colors = data[0].data.map((d, idx) => {
-            let color = '#0E9F6E';
-            if(d > 75) color = '#F05252';
-            if(d > 90) color = '#C27803';
-            return color;
-        })
-        console.log(colors)
-        return colors
-    }
+    
     const data: Series[] = [
         {
             name: 'data',

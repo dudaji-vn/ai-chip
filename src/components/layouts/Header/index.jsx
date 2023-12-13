@@ -7,11 +7,11 @@ import React from "react";
 
 export default function Header() {
     return (
-        <header className="fixed top-0 left-0 right-0 p-6 bg-gray-800 flex items-center justify-center gap-8">
+        <header className="fixed top-0 left-0 right-0 p-6 bg-gray-800 flex items-center justify-center gap-8 z-20 shadow-xl">
             <div className="p-1 hover:bg-slate-700 rounded-md transition-all cursor-pointer">
                 <Bars3CenterLeftIcon className="h-6 w-6 text-white"/>
             </div>
-            <Typography tag='h1' size="2xl">OurApp</Typography>
+            <Typography tag='h1' size="2xl" className="md:flex-none flex-1">OurApp</Typography>
             <Breadcrumb />
             <div className="flex gap-4 flex-center items-center">
                 <Avatar />

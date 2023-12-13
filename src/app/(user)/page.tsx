@@ -7,7 +7,7 @@ import BlockLineChart from '@/components/shared/BlockData/BlockLineChart';
 import Table from '@/components/shared/Table'
 import { Columns } from '@/core/interfaces/columns.interface';
 import Series from '@/core/interfaces/series.interface';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const dataSource = [
     { server_ip: '192.168.1.10', hostname: 'server-1', status: 'Ready', role: 'Manager', cpu: 36, gpu: 36, npu: 54 },
@@ -37,6 +37,14 @@ const chartSeries: Series[] = [
 const chartColumn: string[] = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
 
 export default function ClusterOverview() {
+    let [gauData, setGauData] = useState([10, 20, 30]);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setGauData([Math.floor(Math.random() * 100), Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]);
+        }, 2000);
+        return () => clearInterval(interval);
+    }, [gauData]);
+
     return (
         <div className='flex flex-col gap-2'>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2'>
@@ -58,7 +66,7 @@ export default function ClusterOverview() {
                     <BlockGaugeChart
                         minValue={0}
                         maxValue={100}
-                        value={12.2}
+                        value={gauData[0]}
                         formatText={(value) => `${value}%`}
                     />
                 </BlockDataWrapper>
@@ -66,7 +74,7 @@ export default function ClusterOverview() {
                     <BlockGaugeChart
                         minValue={0}
                         maxValue={100}
-                        value={34}
+                        value={gauData[1]}
                         formatText={(value) => `${value}°C`}
                     />
                 </BlockDataWrapper>
@@ -74,7 +82,7 @@ export default function ClusterOverview() {
                     <BlockGaugeChart
                         minValue={0}
                         maxValue={100}
-                        value={82}
+                        value={gauData[2]}
                         formatText={(value) => `${value}m/s`}
                     />
                 </BlockDataWrapper>

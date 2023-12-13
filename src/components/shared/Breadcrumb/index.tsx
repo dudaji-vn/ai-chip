@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Breadcrumb() {
     return (
-        <div className='flex-1 text-gray-400 flex items-center justify-start gap-4 text-sm font-medium leading-normal'>
+        <div className='flex-1 text-gray-400 hidden md:flex items-center justify-start gap-4 text-sm font-medium leading-normal'>
             <div className='hover:text-white transition-all cursor-pointer'>
                 <HomeIcon className="h-5 w-5 " />
             </div>

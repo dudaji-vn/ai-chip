@@ -15,20 +15,41 @@
   a {
     @apply text-blue-500;
   }
-  
-  
 }
-
-body {
-  
-}
-.apexcharts-canvas {
-  /* background-color: transparent !important; */
-}
+/* Chart download Csv, Img dropdown */
 .apexcharts-menu {
   background-color: #111827 !important;
   border: none !important;
 }
 .apexcharts-menu-item:hover {
+  opacity: 0.8;
+}
+
+
+.select-input .select__control {
+  background-color: #374151;
+  color: #9CA3AF;
+  border-color: #4B5563;
+  padding: 6px 20px;
+}
+.select-input .select__value-container {
+  padding: 0;
+}
+.select-input .select__input-container,
+.select-input .select__single-value {
+  color: #9CA3AF;
+  margin: 0;
+}
+.select-input .select__menu {
+  background-color: #374151;
+}
+.select-input .select__option {
+  background-color: #374151;
+}
+.select-input .select__option:focus {
+  background-color: #374151;
+}
+
+.select-input .select__option:hover {
   opacity: 0.8;
 }
