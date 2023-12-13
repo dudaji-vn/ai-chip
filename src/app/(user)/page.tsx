@@ -3,8 +3,10 @@
 import { BlockDataText, BlockDataWrapper } from '@/components/shared/BlockData'
 import BlockColumnChart from '@/components/shared/BlockData/BlockColumnChart';
 import BlockGaugeChart from '@/components/shared/BlockData/BlockGaugeChart';
+import BlockLineChart from '@/components/shared/BlockData/BlockLineChart';
 import Table from '@/components/shared/Table'
-import { Columns } from '@/core/interfaces/Columns.interface';
+import { Columns } from '@/core/interfaces/columns.interface';
+import Series from '@/core/interfaces/series.interface';
 import React from 'react'
 
 const dataSource = [
@@ -24,6 +26,15 @@ const columns: Columns[] = [
     { header: 'GPUs Counts', field: 'gpu', type: 'text', classNameCol: 'w-[120px]', className: 'text-right' },
     { header: 'NPU Counts', field: 'npu', type: 'text', classNameCol: 'w-[120px]', className: 'text-right' },
 ]
+
+const chartSeries: Series[] = [
+    { name: 'Net Profit', data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
+    { name: 'Revenue', data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
+    { name: 'Free Cash Flow', data: [35, 41, 36, 26, 45, 48, 52, 53, 41] },
+    { name: 'Net Profit', data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
+    { name: 'Revenue', data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
+]
+const chartColumn: string[] = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
 
 export default function ClusterOverview() {
     return (
@@ -68,10 +79,17 @@ export default function ClusterOverview() {
                     />
                 </BlockDataWrapper>
             </div>
+            <div className='grid grid-cols-2 gap-2 '>
+                <BlockDataWrapper title='NPU Utilization'>
+                    <BlockLineChart />
+                </BlockDataWrapper>
+                <BlockDataWrapper title='NPU Utilization'>
+                    <BlockLineChart />
+                </BlockDataWrapper>
+            </div>
             <div className='grid grid-cols-1 gap-2 '>
                 <BlockDataWrapper title='Total inference Count'>
-                    <BlockColumnChart />
-                    {/* <div className=''></div> */}
+                    <BlockColumnChart chartSeries={chartSeries} chartColumns={chartColumn}/>
                 </BlockDataWrapper>
             </div>
             <Table columns={columns} dataSource={dataSource}></Table>

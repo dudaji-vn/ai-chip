@@ -25,3 +25,10 @@ body {
 .apexcharts-canvas {
   /* background-color: transparent !important; */
 }
+.apexcharts-menu {
+  background-color: #111827 !important;
+  border: none !important;
+}
+.apexcharts-menu-item:hover {
+  opacity: 0.8;
+}
