@@ -21,7 +21,6 @@
     "react-dom": "^18",
     "react-gauge-component": "^1.1.30",
     "react-redux": "^9.0.4",
-    "react-select": "^5.8.0",
     "tailwind-merge": "^2.1.0"
   },
   "devDependencies": {

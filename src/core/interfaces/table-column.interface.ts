@@ -1,4 +1,4 @@
-export interface Columns {
+export interface TableColumn {
     header: string;
     field: string;
     classNameCol?: string;

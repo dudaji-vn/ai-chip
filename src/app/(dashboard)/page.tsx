@@ -5,7 +5,7 @@ import BlockColumnChart from '@/components/shared/BlockData/BlockColumnChart';
 import BlockGaugeChart from '@/components/shared/BlockData/BlockGaugeChart';
 import BlockLineChart from '@/components/shared/BlockData/BlockLineChart';
 import Table from '@/components/shared/Table'
-import { Columns } from '@/core/interfaces/columns.interface';
+import { TableColumn } from '@/core/interfaces/table-column.interface';
 import Series from '@/core/interfaces/series.interface';
 import React, { useEffect, useState } from 'react'
 
@@ -17,7 +17,7 @@ const dataSource = [
     { server_ip: '10.1.1.30', hostname: 'server-5', status: 'Ready', role: 'Worker', cpu: 36, gpu: 36, npu: 54 },
 ];
 
-const columns: Columns[] = [
+const columns: TableColumn[] = [
     { header: 'Server IP', field: 'server_ip', type: 'link' },
     { header: 'Hostname', field: 'hostname', type: 'text' },
     { header: 'Status', field: 'status', type: 'status' },

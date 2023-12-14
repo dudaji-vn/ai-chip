@@ -29,8 +29,13 @@
 .select-input .select__control {
   background-color: #374151;
   color: #9CA3AF;
-  border-color: #4B5563;
+  border-color: #4B5563 !important;
   padding: 6px 20px;
+  cursor: pointer;
+  box-shadow: none !important;
+}
+.select-input .select__indicator-separator {
+  display: none;
 }
 .select-input .select__value-container {
   padding: 0;
@@ -58,4 +63,16 @@
 .select-input .select__option:hover {
   opacity: 0.8;
   background-color: #6d7583;
+}
+
+/* Toast */
+.toast-item {
+  transform: translateX(500px);
+  animation: slice 0.5s forwards;
+}
+
+@keyframes slice {
+  100% {
+    transform: translateX(0);
+  }
 }
