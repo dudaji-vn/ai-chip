@@ -26,7 +26,7 @@ export const SelectInput = () => {
                 name="color"
                 options={colourOptions}
                 formatOptionLabel={({ value, label })=>(
-                    <div className='cursor-pointer w-full h-full py-1'>
+                    <div className='cursor-pointer w-full h-full py-1 text-sm'>
                         <div>{label}</div>
                     </div>
                 )}

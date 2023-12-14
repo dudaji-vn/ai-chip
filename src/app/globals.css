@@ -25,7 +25,7 @@
   opacity: 0.8;
 }
 
-
+/* Select Input Custom */
 .select-input .select__control {
   background-color: #374151;
   color: #9CA3AF;
@@ -37,14 +37,19 @@
 }
 .select-input .select__input-container,
 .select-input .select__single-value {
-  color: #9CA3AF;
+  color: #6d7583;
   margin: 0;
+}
+.select-input .select__placeholder {
+  color: #6d7583;
 }
 .select-input .select__menu {
   background-color: #374151;
 }
 .select-input .select__option {
   background-color: #374151;
+  cursor: pointer;
+  color: #D1D5DB;
 }
 .select-input .select__option:focus {
   background-color: #374151;
@@ -52,4 +57,5 @@
 
 .select-input .select__option:hover {
   opacity: 0.8;
+  background-color: #6d7583;
 }

@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { BlockDataText, BlockDataWrapper } from '@/components/shared/BlockData'
 import BlockColumnChart from '@/components/shared/BlockData/BlockColumnChart';
