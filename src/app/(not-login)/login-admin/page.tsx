@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 
 export default function LoginAdmin() {
-    const authStore = useSelector((state: RootState) => state.AuthStore)
+    
     const dispatch = useAppDispatch()
     const [alert, setAlert] = React.useState<string>('')
 

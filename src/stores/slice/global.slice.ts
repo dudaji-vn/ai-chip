@@ -18,12 +18,17 @@ const globalSlice = createSlice({
         toggleSidebar: (state) => {
             state.isOpenSidebar = !state.isOpenSidebar;
         },
+        setLoading: (state, action: PayloadAction<boolean>) => {
+            state.isLoading = action.payload;
+        }
     },
 });
 
 export const {
-    toggleSidebar
+    toggleSidebar,
+    setLoading
 } = globalSlice.actions;
 
 const GlobalReducer = globalSlice.reducer;
+export const GlobalSlice = globalSlice.caseReducers;
 export default GlobalReducer;
