@@ -18,7 +18,17 @@ interface Props {
     isShowPopup?: boolean;
     popupAction?: (row: any) => void;
 }
-export default function Table({ dataSource, columns, isShowDeleteAction, deleteAction, isShowEditAction, editAction, isShowPopup, popupAction, className }: Props) {
+export default function Table({ 
+    dataSource, 
+    columns, 
+    isShowDeleteAction, 
+    deleteAction, 
+    isShowEditAction, 
+    editAction, 
+    isShowPopup, 
+    popupAction, 
+    className 
+}: Props) {
 
     const classesStatus = {
         'Ready': 'text-green-400 after:bg-green-400',
@@ -45,7 +55,7 @@ export default function Table({ dataSource, columns, isShowDeleteAction, deleteA
                                     <p className={column.className}>{row[column.field]}</p>
                                 }
                                 {column.type === 'link' && 
-                                    <Link href='/' className={twMerge( 'hover:underline transition-all',column.className)}>{row[column.field]}</Link>
+                                    <Link href={row?.link || '/'} className={twMerge( 'hover:underline transition-all',column.className)}>{row[column.field]}</Link>
                                 }
                                 {column.type === 'status' && 
                                     <p className={twMerge('relative pl-4 after:content-[""] after:absolute after:top-[50%] after:left-0 after:translate-y-[-50%] after:w-2 after:h-2 after:rounded-full font-light', classesStatus[row[column.field] as keyof typeof classesStatus || ''],

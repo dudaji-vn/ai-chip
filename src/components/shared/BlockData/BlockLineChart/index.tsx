@@ -1,7 +1,12 @@
 import Series from "@/core/interfaces/series.interface";
 import ReactApexChart from "react-apexcharts";
+interface Props {
+    data: Series[];
+    categories: string[];
+}
 
-export default function BlockLineChart() {
+
+export default function BlockLineChart({ data, categories }: Props) {
     const generateColors = (data: Series[]) => {
         return data[0].data.map((d, idx) => {
             let color = '#0E9F6E';
@@ -15,12 +20,6 @@ export default function BlockLineChart() {
         })
     }
     
-    const data: Series[] = [
-        {
-            name: 'data',
-            data: [31, 40, 95, 51, 80, 60, 70]
-        }
-    ]
     return (
         <div className="w-full">
             <ReactApexChart
@@ -73,7 +72,7 @@ export default function BlockLineChart() {
                     },
                     xaxis: {
                         type: 'datetime',
-                        categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                        categories: categories
                     },
                     yaxis: {
                         min: 0,
