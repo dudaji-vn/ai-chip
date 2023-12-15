@@ -3,25 +3,76 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    
   }
 }
+@layer base {
+  a {
+    @apply text-blue-500;
+  }
+}
+/* Chart download Csv, Img dropdown */
+.apexcharts-menu {
+  background-color: #111827 !important;
+  border: none !important;
+}
+.apexcharts-menu-item:hover {
+  opacity: 0.8;
+}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* Select Input Custom */
+.select-input .select__control {
+  background-color: #374151;
+  color: #9CA3AF;
+  border-color: #4B5563 !important;
+  padding: 6px 20px;
+  cursor: pointer;
+  box-shadow: none !important;
+}
+.select-input .select__indicator-separator {
+  display: none;
+}
+.select-input .select__value-container {
+  padding: 0;
+}
+.select-input .select__input-container,
+.select-input .select__single-value {
+  color: #6d7583;
+  margin: 0;
+}
+.select-input .select__placeholder {
+  color: #6d7583;
+}
+.select-input .select__menu {
+  background-color: #374151;
+}
+.select-input .select__option {
+  background-color: #374151;
+  cursor: pointer;
+  color: #D1D5DB;
+}
+.select-input .select__option:focus {
+  background-color: #374151;
+}
+
+.select-input .select__option:hover {
+  opacity: 0.8;
+  background-color: #6d7583;
+}
+
+/* Toast */
+.toast-item {
+  transform: translateX(500px);
+  animation: slice 0.5s forwards;
+}
+
+@keyframes slice {
+  100% {
+    transform: translateX(0);
+  }
 }
