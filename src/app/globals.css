@@ -16,6 +16,10 @@
     @apply text-blue-500;
   }
 }
+@layer utilities {
+  
+}
+
 /* Chart download Csv, Img dropdown */
 .apexcharts-menu {
   background-color: #111827 !important;
@@ -23,46 +27,6 @@
 }
 .apexcharts-menu-item:hover {
   opacity: 0.8;
-}
-
-/* Select Input Custom */
-.select-input .select__control {
-  background-color: #374151;
-  color: #9CA3AF;
-  border-color: #4B5563 !important;
-  padding: 6px 20px;
-  cursor: pointer;
-  box-shadow: none !important;
-}
-.select-input .select__indicator-separator {
-  display: none;
-}
-.select-input .select__value-container {
-  padding: 0;
-}
-.select-input .select__input-container,
-.select-input .select__single-value {
-  color: #6d7583;
-  margin: 0;
-}
-.select-input .select__placeholder {
-  color: #6d7583;
-}
-.select-input .select__menu {
-  background-color: #374151;
-}
-.select-input .select__option {
-  background-color: #374151;
-  cursor: pointer;
-  color: #D1D5DB;
-}
-.select-input .select__option:focus {
-  background-color: #374151;
-}
-
-.select-input .select__option:hover {
-  opacity: 0.8;
-  background-color: #6d7583;
 }
 
 /* Toast */
@@ -76,3 +40,21 @@
     transform: translateX(0);
   }
 }
+
+/* Side bar */
+.page-container.sidebar-collapse .sidebar {
+  width: 60px;
+}
+.page-container.sidebar-collapse .page-content {
+  padding-left: 60px;
+}
+.page-container.sidebar-collapse .sidebar-sub-item {
+  display: none;
+}
+.page-container.sidebar-expand .sidebar {
+  width: 225px;
+}
+.page-container.sidebar-expand .page-content {
+  padding-left: 225px;
+}
+
