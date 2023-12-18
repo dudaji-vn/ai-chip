@@ -3,9 +3,9 @@ import { Breadcrumb } from '@/core/interfaces'
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 
-export default function Breadcrumb() {
+export default memo(function Breadcrumb() {
     const [breadcrumb, setBreadcrumb] = useState<Breadcrumb[]>([])
     const pathname = usePathname();
     const router = useRouter();
@@ -38,4 +38,4 @@ export default function Breadcrumb() {
             ))}
         </div>
     )
-}
+})

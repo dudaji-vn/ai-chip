@@ -1,15 +1,25 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import GlobalReducer from './slice/global.slice';
-import AuthReducer from './slice/auth.slice';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer, persistStore } from 'redux-persist';
+import { rootReducer } from './rootReducer';
 
+const persistConfig = {
+    key: 'root',
+    storage,
+    blacklist: ['GlobalStore'],
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
-    reducer: {
-        GlobalStore: GlobalReducer,
-        AuthStore: AuthReducer,
-    },
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 })
+export const persistor = persistStore(store);
 
 // Define types support for typescript
 export type RootState = ReturnType<typeof store.getState>

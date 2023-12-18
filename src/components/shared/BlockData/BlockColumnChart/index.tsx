@@ -1,5 +1,8 @@
+"use client";
+
 import Series from '@/core/interfaces/series.interface';
-import ReactApexChart from 'react-apexcharts';
+// import ReactApexChart from 'react-apexcharts';
+import dynamic from 'next/dynamic';
 
 interface Props {
     chartSeries: Series[];
@@ -7,9 +10,11 @@ interface Props {
 }
 
 export default function BlockColumnChart({ chartSeries, chartColumns } : Props) {
+    const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
     return (
         <div className='w-full barchart'>
-            <ReactApexChart options={{ chart: {
+            <ReactApexChart options={{ 
+            chart: {
                 type: 'bar',
                 height: 400,
                 background: '#1f2937',
@@ -59,7 +64,7 @@ export default function BlockColumnChart({ chartSeries, chartColumns } : Props) 
             },
             colors: ['#84E1BC', '#FDBA8C', '#FACA15', '#A4CAFE', '#F8B4D9'],
             theme: { mode: 'dark' } }} 
-            series={chartSeries} type="bar" height={350} />
+            series={chartSeries} type="bar" height={350}  width={"100%"} />
         </div>
     )
 }

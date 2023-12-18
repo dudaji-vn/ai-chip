@@ -1,3 +1,5 @@
+'use client'
+
 import { EyeSlashIcon } from "@heroicons/react/24/solid";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import { useId, useState } from "react"

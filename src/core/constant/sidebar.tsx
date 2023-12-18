@@ -6,7 +6,9 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         icon: <ChartPieIcon className='w-6 h-6' />,
         text: 'Dashboard',
         link: '/',
-        pattern: '^/(cluster)?$'
+        // pattern: '^/(cluster)?$'
+        // Pattern accept path: / or /cluster or /cluster/013dcas or /cluster/123dcca/npu/uoiasn2 but not in below list
+        pattern: '^/(cluster|cluster/*)?$'
     },
     {
         icon: <CommandLineIcon className='w-6 h-6' />,

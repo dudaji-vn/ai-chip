@@ -20,18 +20,23 @@ const initialState: AuthStoreType = {
 const authSlice = createSlice({
     name: StoreName.AUTH_STORE,
     initialState,
-    reducers: {},
+    reducers: {
+        logout(state) {
+            state.user = null;
+            state.isAuthentication = false;
+        },
+    },
     extraReducers(builder) {
         builder
             .addCase(loginService.fulfilled, (state, action) => {
-                let userRole = action.payload == 'User logged in' ? 'user' : 'admin';
-                state.user = { id: Math.random().toString(), role: userRole};
+                let userRole = action.payload.message == 'User logged in' ? 'user' : 'admin';
+                state.user = { id: Math.random().toString(), role: userRole, email: action.payload.email};
                 state.isAuthentication = true;
             })
         }
 });
 
-export const { } = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 const AuthReducer = authSlice.reducer;
 export default AuthReducer;
