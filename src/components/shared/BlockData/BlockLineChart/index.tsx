@@ -1,5 +1,10 @@
+"use client";
+
 import Series from "@/core/interfaces/series.interface";
-import ReactApexChart from "react-apexcharts";
+// import ReactApexChart from 'react-apexcharts';
+import dynamic from 'next/dynamic';
+
+
 interface Props {
     data: Series[];
     categories: string[];
@@ -7,18 +12,7 @@ interface Props {
 
 
 export default function BlockLineChart({ data, categories }: Props) {
-    const generateColors = (data: Series[]) => {
-        return data[0].data.map((d, idx) => {
-            let color = '#0E9F6E';
-            if(d > 75) color = '#F05252';
-            if(d > 90) color = '#C27803';
-            return {
-                offset: idx / data.length * 100,
-                color,
-                opacity: 0.5
-            };
-        })
-    }
+    const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
     
     return (
         <div className="w-full">
@@ -87,15 +81,6 @@ export default function BlockLineChart({ data, categories }: Props) {
                         //     text: 'Percent'
                         // },
                     },
-                    fill: {
-                        opacity: 1,
-                        gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.7,
-                            opacityTo: 0.9,
-                            colorStops: generateColors(data)
-                        },
-                    },
                     tooltip: {
                         x: {
                             // format: 'dd/MM/yy HH:mm'
@@ -107,7 +92,7 @@ export default function BlockLineChart({ data, categories }: Props) {
                     // minValue: 0,
                 }}
                 series={data}
-                type="area" height={350} />
+                type="area" height={350}  width={"100%"}/>
         </div>
     )
 }

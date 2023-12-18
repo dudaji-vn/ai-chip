@@ -14,6 +14,8 @@ export default function Avatar({ className, src, alt } : Props) {
                 src={src || '/images/avatar.png'}
                 alt={alt || 'Avatar'}
                 fill
+                sizes='100%'
+                className='absolute'
             ></Image>
         </div>
     )

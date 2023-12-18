@@ -46,7 +46,7 @@
   width: 60px;
 }
 .page-container.sidebar-collapse .page-content {
-  padding-left: 60px;
+  padding-left: 76px;
 }
 .page-container.sidebar-collapse .sidebar-sub-item {
   display: none;
@@ -55,6 +55,9 @@
   width: 225px;
 }
 .page-container.sidebar-expand .page-content {
-  padding-left: 225px;
+  padding-left: 241px;
 }
 
+nextjs-portal {
+  display: none;
+}

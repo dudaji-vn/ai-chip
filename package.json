@@ -22,6 +22,7 @@
     "react-gauge-component": "^1.1.30",
     "react-hook-form": "^7.49.2",
     "react-redux": "^9.0.4",
+    "redux-persist": "^6.0.0",
     "tailwind-merge": "^2.1.0"
   },
   "devDependencies": {

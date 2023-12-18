@@ -2,7 +2,8 @@ import { StoreName } from "@/core/enums/store.enum";
 import { User } from "@/core/interfaces/user.interface";
 import { createSlice } from "@reduxjs/toolkit";
 import { loginService } from "@/services/auth.service";
-import { getUserList } from "@/services/user.service";
+import { setLoading } from "./global.slice";
+import { useDispatch } from "react-redux";
 
 interface AuthStoreType {
     isLoading: boolean;
@@ -19,25 +20,23 @@ const initialState: AuthStoreType = {
 const authSlice = createSlice({
     name: StoreName.AUTH_STORE,
     initialState,
-    reducers: {},
+    reducers: {
+        logout(state) {
+            state.user = null;
+            state.isAuthentication = false;
+        },
+    },
     extraReducers(builder) {
         builder
             .addCase(loginService.fulfilled, (state, action) => {
-                let userRole = action.payload == 'User logged in' ? 'user' : 'admin';
-                state.isLoading = false;
-                state.user = { id: Math.random().toString(), role: userRole};
+                let userRole = action.payload.message == 'User logged in' ? 'user' : 'admin';
+                state.user = { id: Math.random().toString(), role: userRole, email: action.payload.email};
                 state.isAuthentication = true;
-            })
-            .addCase(loginService.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(loginService.rejected, (state) => {
-                state.isLoading = false;
             })
         }
 });
 
-export const { } = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 const AuthReducer = authSlice.reducer;
 export default AuthReducer;
