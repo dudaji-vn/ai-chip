@@ -5,7 +5,7 @@ import { successResponseInterceptor } from '@/core/interceptors/success-response
 import { errorResponseInterceptor } from '@/core/interceptors/error-response-interceptor'
 
 const config = {
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL + '/api/v1/',
 }
 
 export const instance = axios.create(config)

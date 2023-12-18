@@ -53,6 +53,17 @@ export default function LoginUser() {
                             <p className="text-sm text-gray-500 font-normal">another_user@dudaji.com</p>
                         </div>
                     </div>
+                    <div onClick={()=>handleLogin('ai-chip@gmail.com')} className='flex gap-3 p-4 border-b border-gray-600 items-center transition-all cursor-pointer hover:bg-gray-700'>
+                        <Avatar
+                            src='/images/avatar.png'
+                            alt='Avatar'
+                            className='mx-auto w-12 h-12'
+                        ></Avatar>
+                        <div className='flex-1 text-left'>
+                            <h3 className='mb-[6px] text-base leading-none font-semibold'>ai-chip</h3>
+                            <p className="text-sm text-gray-500 font-normal">ai-chip@gmail.com</p>
+                        </div>
+                    </div>
                     <div className='flex font-semibold gap-3 p-4 items-center transition-all cursor-pointer hover:bg-gray-700'>
                         <UserCircleIcon className="w-6 h-6 text-gray-500"></UserCircleIcon>
                         <div className='flex-1 text-left'>

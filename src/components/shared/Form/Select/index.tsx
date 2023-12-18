@@ -13,10 +13,11 @@ interface Props {
     placeholder?: string;
     icon?: React.ReactNode;
     options: SelectItem[],
-    type?: 'primary' | 'secondary'
+    type?: 'primary' | 'secondary',
+    onChange?: (value: any) => void;
 }
 
-export function Select({ className, label, placeholder, icon, options, type =  'primary' } : Props) {
+export function Select({ className, label, placeholder, icon, options, type =  'primary', onChange } : Props) {
     const [selected, setSelected] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     
@@ -30,6 +31,9 @@ export function Select({ className, label, placeholder, icon, options, type =  '
         let label = options.find(option => option.value === value)?.label || null;
         setSelected(label);
         setIsOpen(false);
+        if(onChange) {
+            onChange(value);
+        }
     }
 
     const types = {
