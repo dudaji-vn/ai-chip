@@ -1,17 +1,18 @@
 'use client'
 
 import Link from 'next/link';
-import { Fragment, memo, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { Fragment, memo, useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
+
 import { SIDEBAR_ITEMS } from '@/core/constant';
 import { SidebarItem } from '@/core/interfaces';
-import { usePathname } from 'next/navigation';
+import { useAppSelector } from '@/stores';
 
 export default memo(function LeftSidebar() {
     return (
-        <aside className={twMerge('p-[10px] border-r border-gray-700 z-10 transition-all duration-200 fixed top-[80px] left-0 bottom-0 sidebar')}>
+        <aside className={twMerge('p-[10px] border-r border-gray-700 z-10 transition-all duration-200 fixed top-[80px] left-0 bottom-0 sidebar bg-gray-900')}>
             {SIDEBAR_ITEMS.map((item) =>
                 <MenuItem key={item.text} item={item}/>
             )}
@@ -21,8 +22,11 @@ export default memo(function LeftSidebar() {
 
 const MenuItem = ( { item } : { item: SidebarItem}) => {
     const [isOpenChildren, setIsOpenChildren] = useState(false);
+    const [isActive, setIsActive] = useState(false);
+    const userRole = useAppSelector(state => state.AuthStore.user?.role);
+
     const pathname = usePathname();
-    const { icon, text, link, children, pattern } = item;
+    const { icon, text, link, children, patterns, permission } = item;
 
     const toggleChildrent = () => {
         setIsOpenChildren(!isOpenChildren);
@@ -30,6 +34,7 @@ const MenuItem = ( { item } : { item: SidebarItem}) => {
 
     let Tag: any = 'div';
     let props = {};
+
     if(link) {
         Tag = Link;
         props = { href: link }
@@ -40,6 +45,21 @@ const MenuItem = ( { item } : { item: SidebarItem}) => {
         props = { onClick: toggleChildrent }
     }
     const isHaveChildren = children && children.length > 0;
+
+    
+    useEffect(() => {
+        let isItemActive = false;
+        if (pathname && patterns) {
+            patterns?.map(pattern => {
+                if (new RegExp(pattern).test(pathname)) {
+                    isItemActive = true
+                }
+            })
+        }
+        setIsActive(isItemActive);
+    }, [pathname, patterns])
+
+    if(userRole == 'user' && permission == 'admin') return null;
     
     return (
         <Fragment>
@@ -47,7 +67,7 @@ const MenuItem = ( { item } : { item: SidebarItem}) => {
                 twMerge(
                     'cursor-pointer p-2 flex items-center justify-start gap-3 text-gray-400 transition-all rounded-sm hover:text-white hover:bg-gray-700 text-base overflow-hidden', 
                     children && children?.length > 0 ? 'mb-[6px]' : 'mb-3',
-                    pattern && pathname && (new RegExp(pattern).test(pathname) ? ' text-white bg-gray-700' : '')
+                    isActive ? ' text-white bg-gray-700' : ''
                 )
             }>
                 {icon ? <div className='w-6 h-6'>{icon}</div> : null}

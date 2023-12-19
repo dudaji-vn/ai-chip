@@ -1,5 +1,4 @@
 import { RootState } from "@/stores"
-import { Router } from "next/router"
 import { useSelector } from "react-redux"
 export function GlobalLoading() {
     const isLoading = useSelector((state: RootState) => state.GlobalStore.isLoading)

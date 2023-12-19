@@ -1,7 +1,8 @@
 'use client'
 
-import Link from "next/link";
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
+import { usePathname } from "next/navigation";
+import { UsersIcon } from "@heroicons/react/24/outline";
 
 import Avatar from "@/components/shared/Avatar";
 import Breadcrumb from "@/components/shared/Breadcrumb";
@@ -9,21 +10,40 @@ import Typography from "@/components/shared/Typography";
 import { Bars3CenterLeftIcon } from "@heroicons/react/24/solid";
 import Modal from "@/components/shared/Modal";
 import Button from "@/components/shared/Button";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { useAppDispatch } from "@/stores";
+import { useAppDispatch, useAppSelector } from "@/stores";
 import { logout } from "@/stores/slice/auth.slice";
+import { Select } from "@/components/shared/Form";
+import useUserApi from "@/core/hooks/api/useUserApi";
+import { User } from "@/core/interfaces/user.interface";
+import { changeCurrentUserId } from "@/stores/slice/global.slice";
 
 interface Props {
     toggleSidebar: () => void;
 }
 
 export default memo(function Header({ toggleSidebar } : Props)  {
-    const [isShowModalLogout, setIsShowModalLogout] = useState(false);
-    const toggleModalLogout = () => setIsShowModalLogout(prev => !prev)
+    const pathname = usePathname();
     const dispatch = useAppDispatch();
+
+    const [isShowModalLogout, setIsShowModalLogout] = useState(false);
+    const userRole = useAppSelector(state => state.AuthStore.user?.role);
+    const current_user_id = useAppSelector(state => state.GlobalStore.current_user_id);
+    
+    const { users } = useUserApi();
+    let userOptions = users?.map((user: User) => ({ label: user.name, value: user.id })) || [];
+
+    const currentUserName = users?.find((user: User) => user.id == current_user_id)?.name || '';
+
+    const toggleModalLogout = useCallback(() => {
+        setIsShowModalLogout(!isShowModalLogout);
+    }, [isShowModalLogout]);
+
     const handleLogout = () => {
         dispatch(logout())
         setIsShowModalLogout(false);
+    }
+    const handleChangeUser = (value: string) => {
+        dispatch(changeCurrentUserId(value))
     }
 
     return (
@@ -34,6 +54,16 @@ export default memo(function Header({ toggleSidebar } : Props)  {
             <Typography tag='h1' size="2xl" className="md:flex-none flex-1">OurApp</Typography>
             <Breadcrumb />
             <div className="flex gap-4 flex-center items-center">
+                {userRole == 'admin' && pathname == '/' &&
+                    <Select
+                        className="w-[200px]"
+                        placeholder="Select User"
+                        defaultValue={currentUserName || ''}
+                        icon={<UsersIcon className="w-5 h-5" />}
+                        options={userOptions}
+                        onChange={handleChangeUser}
+                    ></Select>
+                }
                 <Avatar src='/images/avatar.png' alt='Avatar'/>
                 <span className="max-h-8 h-8 w-[1px] bg-gray-700 block"></span>
                 <a className="font-medium cursor-pointer" onClick={toggleModalLogout}>Logout</a>

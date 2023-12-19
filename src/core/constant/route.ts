@@ -6,21 +6,21 @@ export const ROUTE = {
             { label: 'Cluster overview' }
         ]
     },
-    'NPU': {
-        path: '/cluster/:clusterId/npu/:npuId',
-        pattern: '/cluster/[^/]+/npu/[^/]+',
+    'SERVER': {
+        path: '/server/:serverId',
+        pattern: '/server/[^/]+',
         breadcrumb: [
             { label: 'Cluster overview', path: '/' },
-            { label: 'Cluster page', path: '/cluster/123' },
-            { label: 'NPU details' },
+            { label: 'Server' },
         ]
     },
-    'CLUSTERPAGE': {
-        path: '/cluster',
-        pattern: '/cluster/*',
+    'NPU': {
+        path: '/npu/:npuId',
+        pattern: '/npu/[^/]+',
         breadcrumb: [
             { label: 'Cluster overview', path: '/' },
-            { label: 'Cluster page' }
+            { label: 'Server', dynamic_path: 'server' },
+            { label: 'NPU details' },
         ]
     },
     'INTERFACE': {

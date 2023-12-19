@@ -5,3 +5,4 @@ export * from "./series.interface";
 export * from "./select-item.interface";
 export * from "./breadcrumb.interface";
 export * from "./route.interface";
+export * from "./cluster.interface";

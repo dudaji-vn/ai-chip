@@ -1,5 +1,5 @@
 import { XMarkIcon } from '@heroicons/react/24/solid'
-import React, { Fragment } from 'react'
+import React, { Fragment, memo } from 'react'
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
     children: React.ReactNode;
 }
 
-export default function Modal({ title, isOpen, onClose, className, children } : Props) {
+export default memo(function Modal({ title, isOpen, onClose, className, children } : Props) {
     return (
         <Fragment>
             <div  onClick={onClose} className={twMerge('fixed inset-0 bg-gray-600/60 z-20 transition-all', isOpen ? 'opacity-100 cursor-pointer' : 'pointer-events-none opacity-0 ')} ></div>
@@ -29,4 +29,4 @@ export default function Modal({ title, isOpen, onClose, className, children } : 
             </div>
         </Fragment>
     )
-}
+})
