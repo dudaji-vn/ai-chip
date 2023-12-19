@@ -8,6 +8,7 @@ import { ChevronDownIcon } from '@heroicons/react/24/solid';
 
 import { SIDEBAR_ITEMS } from '@/core/constant';
 import { SidebarItem } from '@/core/interfaces';
+import { useAppSelector } from '@/stores';
 
 export default memo(function LeftSidebar() {
     return (
@@ -22,9 +23,10 @@ export default memo(function LeftSidebar() {
 const MenuItem = ( { item } : { item: SidebarItem}) => {
     const [isOpenChildren, setIsOpenChildren] = useState(false);
     const [isActive, setIsActive] = useState(false);
+    const userRole = useAppSelector(state => state.AuthStore.user?.role);
 
     const pathname = usePathname();
-    const { icon, text, link, children, patterns } = item;
+    const { icon, text, link, children, patterns, permission } = item;
 
     const toggleChildrent = () => {
         setIsOpenChildren(!isOpenChildren);
@@ -44,6 +46,7 @@ const MenuItem = ( { item } : { item: SidebarItem}) => {
     }
     const isHaveChildren = children && children.length > 0;
 
+    
     useEffect(() => {
         let isItemActive = false;
         if (pathname && patterns) {
@@ -56,6 +59,8 @@ const MenuItem = ( { item } : { item: SidebarItem}) => {
         setIsActive(isItemActive);
     }, [pathname, patterns])
 
+    if(userRole == 'user' && permission == 'admin') return null;
+    
     return (
         <Fragment>
             <Tag {...props} className={

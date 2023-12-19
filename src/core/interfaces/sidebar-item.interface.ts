@@ -6,4 +6,5 @@ export interface SidebarItem {
     link?: string;
     children?: SidebarItem[];
     patterns?: string[];
+    permission?: string;
 }

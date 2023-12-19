@@ -34,6 +34,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         patterns: [
             '^/users',
         ],
+        permission: 'admin',
         children: [
             { text: 'User list', link: '/users' },
             { text: 'Configuration', link: '/' },
