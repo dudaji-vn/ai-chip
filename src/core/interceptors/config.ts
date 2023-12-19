@@ -6,6 +6,7 @@ import { errorResponseInterceptor } from '@/core/interceptors/error-response-int
 
 const config = {
   baseURL: process.env.NEXT_PUBLIC_BASE_URL + '/api/v1/',
+  timeout: 10000,
 }
 
 export const instance = axios.create(config)

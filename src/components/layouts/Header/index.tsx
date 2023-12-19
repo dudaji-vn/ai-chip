@@ -1,7 +1,8 @@
 'use client'
 
-import Link from "next/link";
 import { memo, useCallback, useState } from "react";
+import { usePathname } from "next/navigation";
+import { UsersIcon } from "@heroicons/react/24/outline";
 
 import Avatar from "@/components/shared/Avatar";
 import Breadcrumb from "@/components/shared/Breadcrumb";
@@ -12,8 +13,6 @@ import Button from "@/components/shared/Button";
 import { useAppDispatch, useAppSelector } from "@/stores";
 import { logout } from "@/stores/slice/auth.slice";
 import { Select } from "@/components/shared/Form";
-import { UsersIcon } from "@heroicons/react/24/outline";
-import { usePathname } from "next/navigation";
 import useUserApi from "@/core/hooks/api/useUserApi";
 import { User } from "@/core/interfaces/user.interface";
 import { changeCurrentUserId } from "@/stores/slice/global.slice";

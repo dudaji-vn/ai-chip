@@ -1,5 +1,6 @@
 import { ROUTE } from '@/core/constant/route'
 import { Breadcrumb } from '@/core/interfaces'
+import { useAppSelector } from '@/stores'
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -7,6 +8,9 @@ import { memo, useEffect, useState } from 'react'
 
 export default memo(function Breadcrumb() {
     const [breadcrumb, setBreadcrumb] = useState<Breadcrumb[]>([])
+
+    const globalBreadcrumb = useAppSelector(state => state.GlobalStore.breadcrumb);
+
     const pathname = usePathname();
     const router = useRouter();
 
@@ -33,7 +37,13 @@ export default memo(function Breadcrumb() {
             {breadcrumb.map((item, index) => (
                 <div key={index} className='flex items-center gap-2'>
                     {index > 0 && <p><ChevronRightIcon className='h-5 w-5 text-inherit'/></p>}
-                    {item.path ? <Link href={item.path} className='text-inherit hover:text-white transition-all'>{item.label}</Link> : <p>{item.label}</p>}
+                    {item.path && <Link href={item.path} className='text-inherit hover:text-white transition-all'>{item.label}</Link>}
+                    {item.dynamic_path && globalBreadcrumb[item.dynamic_path] &&
+                        <Link href={globalBreadcrumb[item.dynamic_path].link} className='text-inherit hover:text-white transition-all'>
+                            {globalBreadcrumb[item.dynamic_path].title}
+                        </Link>
+                    }
+                    {!item.path && !item.dynamic_path && <p>{item.label}</p>}
                 </div>
             ))}
         </div>

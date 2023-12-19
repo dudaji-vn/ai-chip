@@ -4,12 +4,12 @@ import React from 'react'
 export default function ChartEmpty() {
     return (
         <div className='flex flex-col items-center'>
-            <div className='relative w-full max-w-[396px] mb-8'>
+            <div className='relative w-full max-w-[396px] min-h-[180px] h-auto mb-8'>
                 <Image
                     src='/images/chart_empty.svg'
                     alt='Chart Empty'
-                    width={396}
-                    height={396}
+                    fill
+                    priority
                 />
             </div>
             <p className='mb-2 text-xl font-medium'>Empty data</p>

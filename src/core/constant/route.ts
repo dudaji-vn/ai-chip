@@ -19,7 +19,7 @@ export const ROUTE = {
         pattern: '/npu/[^/]+',
         breadcrumb: [
             { label: 'Cluster overview', path: '/' },
-            { label: 'Server', path: '/' },
+            { label: 'Server', dynamic_path: 'server' },
             { label: 'NPU details' },
         ]
     },

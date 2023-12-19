@@ -8,10 +8,8 @@ import Series from '@/core/interfaces/series.interface';
 import React from 'react'
 import { Select } from '@/components/shared/Form';
 import useClusterApi from '@/core/hooks/api/useClusterApi';
-import { Loading } from '@/components/shared/Loading';
 import { serverColumn } from '@/core/column';
 import { useAppSelector } from '@/stores';
-import Alert from '@/components/shared/Alert';
 import Skeleton from '@/components/shared/Skeleton';
 import ChartEmpty from '@/components/shared/ChartEmpty';
 

@@ -1,5 +1,6 @@
-import { getNpusService } from "@/services/npu.service";
 import { useQuery } from "@tanstack/react-query";
+
+import { getNpusService } from "@/services/npu.service";
 
 export default function useNpuApi(user_id: string) {
     const { isLoading, data: npus, isError } = useQuery({ 

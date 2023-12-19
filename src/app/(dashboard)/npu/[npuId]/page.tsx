@@ -12,7 +12,7 @@ import { ClockIcon } from '@heroicons/react/24/solid';
 import useNpuApi from '@/core/hooks/api/useNpuApi';
 import { useAppDispatch, useAppSelector } from '@/stores';
 import useNpuDetailApi from '@/core/hooks/api/useNpuDetailApi';
-import { changeCurrentUserId } from '@/stores/slice/global.slice';
+import { changeBreadcrumb, changeCurrentUserId } from '@/stores/slice/global.slice';
 import splitNumberAndCharacter from '@/utils/splitNumberAndCharacter';
 import Link from 'next/link';
 import Skeleton from '@/components/shared/Skeleton';
@@ -51,6 +51,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
     const router = useRouter();
     
     const current_user_id = useAppSelector(state => state.GlobalStore.current_user_id);
+    const breadcrumb = useAppSelector(state => state.GlobalStore.breadcrumb);
     const user_id = useAppSelector(state => state.AuthStore.user?.id);
 
     let npuId = params?.npuId || '';
@@ -58,7 +59,9 @@ export default function NPU({ params }: { params: { npuId: string } }) {
     const { isLoading: isLoadingListNpu, npus, isError: isErrorListNpu } = useNpuApi(current_user_id || user_id || '')
     const { isLoading, npu, isError } = useNpuDetailApi(npuId || '')
 
-    const npuOptions = npus?.filter((item: any) => item?.server_id === npu?.server_id).map((npu: any) => ({ label: npu.npu_device_name, value: npu.npu_id })) || []
+    const npuOptions = npus?.filter((item: any) => item?.server_id === npu?.server_id) // filter npu by server_id
+                            ?.map((npu: any) => ({ label: npu.npu_device_name, value: npu.npu_id }))  // map npu to option
+                            || []
 
     const handleChangeNpu = useCallback((value: string) => {
         if (!value) return;
@@ -71,8 +74,19 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                 dispatch(changeCurrentUserId(npu.user_id))
             }
         }
-
     }, [current_user_id, dispatch, npu])
+
+    useEffect(() => {
+        if(npu && npu?.server_ip && npu?.server_id && breadcrumb?.server?.id !== npu?.server_ip) {
+            dispatch(changeBreadcrumb({
+                server: {
+                    id: npu?.server_id, 
+                    link: '/server/' + npu?.server_id, 
+                    title: npu?.server_ip
+                }
+            }))
+        }
+    }, [breadcrumb?.server?.id, dispatch, npu])
 
     return (
         <div className='flex flex-col gap-2'>
@@ -179,7 +193,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                             <BlockColumnChart chartSeries={chartSeries} chartColumns={chartColumn} />
                         </BlockDataWrapper>
                     </div>
-                    <div className='grid grid-cols-2 gap-2 '>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-2 '>
                         <BlockDataWrapper title='NPU Utilization'>
                             <BlockLineChart
                                 data={[{
@@ -199,7 +213,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                             ></BlockLineChart>
                         </BlockDataWrapper>
                     </div>
-                    <div className='grid grid-cols-2 gap-2 '>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-2 '>
                         <BlockDataWrapper title='Power Draw'>
                             <BlockLineChart
                                 data={[{

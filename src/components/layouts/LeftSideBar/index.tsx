@@ -1,13 +1,13 @@
 'use client'
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Fragment, memo, useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
+
 import { SIDEBAR_ITEMS } from '@/core/constant';
 import { SidebarItem } from '@/core/interfaces';
-import { usePathname } from 'next/navigation';
 
 export default memo(function LeftSidebar() {
     return (
@@ -43,7 +43,7 @@ const MenuItem = ( { item } : { item: SidebarItem}) => {
         props = { onClick: toggleChildrent }
     }
     const isHaveChildren = children && children.length > 0;
-    
+
     useEffect(() => {
         let isItemActive = false;
         if (pathname && patterns) {

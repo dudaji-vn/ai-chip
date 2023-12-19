@@ -5,12 +5,14 @@ interface GlobalStoreType {
     isLoading: boolean;
     isOpenSidebar: boolean;
     current_user_id: string;
+    breadcrumb: any;
 }
 
 const initialState: GlobalStoreType = {
     isLoading: false,
     isOpenSidebar: false,
     current_user_id: '',
+    breadcrumb: {},
 };
 
 const globalSlice = createSlice({
@@ -25,6 +27,9 @@ const globalSlice = createSlice({
         },
         changeCurrentUserId: (state, action: PayloadAction<string>) => {
             state.current_user_id = action.payload;
+        },
+        changeBreadcrumb: (state, action: PayloadAction<any>) => {
+            state.breadcrumb = { ...state.breadcrumb, ...action.payload};
         }
     },
 });
@@ -33,6 +38,7 @@ export const {
     toggleSidebar,
     setLoading,
     changeCurrentUserId,
+    changeBreadcrumb,
 } = globalSlice.actions;
 
 const GlobalReducer = globalSlice.reducer;

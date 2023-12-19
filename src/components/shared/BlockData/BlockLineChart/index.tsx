@@ -89,7 +89,9 @@ export default function BlockLineChart({ data, categories }: Props) {
                     },
                     theme: { mode: 'dark' },
                     colors: ['#0E9F6E'],
-                    // minValue: 0,
+                    grid: {
+                        borderColor: '#374151',
+                    }
                 }}
                 series={data}
                 type="area" height={350}  width={"100%"}/>

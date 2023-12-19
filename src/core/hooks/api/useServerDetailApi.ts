@@ -1,5 +1,6 @@
-import { getServerDetailService } from "@/services/server.service";
 import { useQuery } from "@tanstack/react-query";
+
+import { getServerDetailService } from "@/services/server.service";
 
 export default function useServerDetailApi(server_id: string) {
     const { isLoading, data: server, isError } = useQuery({ 
