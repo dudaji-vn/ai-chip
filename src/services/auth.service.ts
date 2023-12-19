@@ -11,7 +11,7 @@ export const loginService = createAsyncThunk('auth/loginService', async (body: U
         thunkAPI.dispatch(changeCurrentUserId(body.id))
         let responseData = {
             ...response.data,
-            email: body.id
+            id: body.id
         }
         return responseData;
     } catch (error: any) {

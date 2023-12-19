@@ -28,12 +28,12 @@ export default function BlockLineChart({ data, categories }: Props) {
                                 fillColor: '#C27803',
                                 opacity: 0.2,
                             },
-                            {
-                                y: 75,
-                                y2: 90,
-                                fillColor: '#C27803',
-                                opacity: 0.2,
-                            },
+                            // {
+                            //     y: 75,
+                            //     y2: 90,
+                            //     fillColor: '#C27803',
+                            //     opacity: 0.2,
+                            // },
                             {
                                 y: 90,
                                 borderColor: '#F05252',
@@ -42,15 +42,15 @@ export default function BlockLineChart({ data, categories }: Props) {
                                 borderWidth: 1,
                                 opacity: 0.4,
                             },
-                            {
-                                y: 90,
-                                y2: 100,
-                                borderColor: '#F05252',
-                                fillColor: '#F05252',
-                                strokeDashArray: 0,
-                                borderWidth: 3,
-                                opacity: 0.2,
-                            }
+                            // {
+                            //     y: 90,
+                            //     y2: 100,
+                            //     borderColor: '#F05252',
+                            //     fillColor: '#F05252',
+                            //     strokeDashArray: 0,
+                            //     borderWidth: 3,
+                            //     opacity: 0.2,
+                            // }
                         ]
                     },
                     chart: {

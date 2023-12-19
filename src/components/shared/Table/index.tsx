@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 import { TableColumn } from '@/core/interfaces/table-column.interface';
@@ -17,7 +17,7 @@ interface Props {
     isShowPopup?: boolean;
     popupAction?: (row: any) => void;
 }
-export default function Table({ 
+function Table({ 
     dataSource, 
     columns, 
     isShowDeleteAction, 
@@ -48,7 +48,7 @@ export default function Table({
             <tbody>
                 {!dataSource && <tr><td colSpan={columns.length} className='text-center text-gray-400 text-sm'>No data</td></tr>}
                 {dataSource && dataSource.length > 0 && dataSource.map((row, index) => (
-                    <tr key={index} className='border-b border-gray-700 text-gray-400 text-sm'>
+                    <tr key={index} className='border-b border-gray-700 text-gray-400 text-sm bg-gray-800'>
                         {columns.map((column) => (
                             <td key={column.field} className={twMerge('p-4')}>
                                 {column.type === 'text' && 
@@ -81,3 +81,5 @@ export default function Table({
         </table>
     )
 }
+
+export default memo(Table)

@@ -28,9 +28,12 @@ export default memo(function Header({ toggleSidebar } : Props)  {
 
     const [isShowModalLogout, setIsShowModalLogout] = useState(false);
     const userRole = useAppSelector(state => state.AuthStore.user?.role);
-
+    const current_user_id = useAppSelector(state => state.GlobalStore.current_user_id);
+    
     const { users } = useUserApi();
     let userOptions = users?.map((user: User) => ({ label: user.name, value: user.id })) || [];
+
+    const currentUserName = users?.find((user: User) => user.id == current_user_id)?.name || '';
 
     const toggleModalLogout = useCallback(() => {
         setIsShowModalLogout(!isShowModalLogout);
@@ -56,6 +59,7 @@ export default memo(function Header({ toggleSidebar } : Props)  {
                     <Select
                         className="w-[200px]"
                         placeholder="Select User"
+                        defaultValue={currentUserName || ''}
                         icon={<UsersIcon className="w-5 h-5" />}
                         options={userOptions}
                         onChange={handleChangeUser}

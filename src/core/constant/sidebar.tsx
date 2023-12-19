@@ -6,29 +6,38 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         icon: <ChartPieIcon className='w-6 h-6' />,
         text: 'Dashboard',
         link: '/',
-        // ex: / or /server/somthingelse or /npu/somethingelse
-        pattern: '^/$'
+        patterns: [
+            '^/$',
+            '^/server',
+            '^/npu'
+        ]
     },
     {
         icon: <CommandLineIcon className='w-6 h-6' />,
         text: 'Inference Endpoint',
         link: '/interface-endpoint',
-        pattern: '^/interface-endpoint'
+        patterns: [
+            '^/interface-endpoint',
+        ]
     },
     {
         icon: <CircleStackIcon className='w-6 h-6' />,
         text: 'Storage',
         link: '/storage',
-        pattern: '^/storage'
+        patterns: [
+            '^/storage',
+        ]
     },
     {
         icon: <Cog8ToothIcon className='w-6 h-6' />,
         text: 'Adminstration',
-        pattern: '^/admin',
+        patterns: [
+            '^/users',
+        ],
         children: [
-            { text: 'User list', link: '/admin/users' },
-            { text: 'Configuration', link: '/admin/configuration' },
-            { text: 'Cluster information', link: '/admin/cluster-information' },
+            { text: 'User list', link: '/users' },
+            { text: 'Configuration', link: '/' },
+            { text: 'Cluster information', link: '/' },
         ]
     }
 ]

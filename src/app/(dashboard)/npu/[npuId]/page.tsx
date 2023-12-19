@@ -6,9 +6,17 @@ import BlockGaugeChart from '@/components/shared/BlockData/BlockGaugeChart';
 import BlockLineChart from '@/components/shared/BlockData/BlockLineChart';
 import { TableColumn } from '@/core/interfaces/table-column.interface';
 import Series from '@/core/interfaces/series.interface';
-import React from 'react'
+import React, { Fragment, useCallback, useEffect } from 'react'
 import { Select } from '@/components/shared/Form';
 import { ClockIcon } from '@heroicons/react/24/solid';
+import useNpuApi from '@/core/hooks/api/useNpuApi';
+import { useAppDispatch, useAppSelector } from '@/stores';
+import useNpuDetailApi from '@/core/hooks/api/useNpuDetailApi';
+import { changeCurrentUserId } from '@/stores/slice/global.slice';
+import splitNumberAndCharacter from '@/utils/splitNumberAndCharacter';
+import Link from 'next/link';
+import Skeleton from '@/components/shared/Skeleton';
+import { useRouter } from 'next/navigation';
 
 const dataSource = [
     { server_ip: '192.168.1.10', hostname: 'server-1', status: 'Ready', role: 'Manager', cpu: 36, gpu: 36, npu: 54, link: '/cluster/123456789' },
@@ -37,139 +45,218 @@ const chartSeries: Series[] = [
 ]
 const chartColumn: string[] = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
 
-export default function NPUDetail() {
+export default function NPU({ params }: { params: { npuId: string } }) {
+
+    const dispatch = useAppDispatch();
+    const router = useRouter();
     
+    const current_user_id = useAppSelector(state => state.GlobalStore.current_user_id);
+    const user_id = useAppSelector(state => state.AuthStore.user?.id);
+
+    let npuId = params?.npuId || '';
+
+    const { isLoading: isLoadingListNpu, npus, isError: isErrorListNpu } = useNpuApi(current_user_id || user_id || '')
+    const { isLoading, npu, isError } = useNpuDetailApi(npuId || '')
+
+    const npuOptions = npus?.filter((item: any) => item?.server_id === npu?.server_id).map((npu: any) => ({ label: npu.npu_device_name, value: npu.npu_id })) || []
+
+    const handleChangeNpu = useCallback((value: string) => {
+        if (!value) return;
+        router.push(`/npu/${value}`)
+    }, [router])
+
+    useEffect(() => {
+        if (npu && npu.user_id) {
+            if (current_user_id !== npu.user_id) {
+                dispatch(changeCurrentUserId(npu.user_id))
+            }
+        }
+
+    }, [current_user_id, dispatch, npu])
 
     return (
         <div className='flex flex-col gap-2'>
-            <div className='flex gap-2'>
-                <span className='px-5 py-[10px] rounded-sm border border-gray-600 text-blue-400 text-sm leading-none flex items-center justify-center'>NPUs</span>
-                <Select
-                    className='w-[346px]'
-                    type='secondary'
-                    placeholder='Sapeon X220'
-                    options={[
-                        { label: 'Sapeon X222', value: 'item-1' },
-                        { label: 'Sapeon X223', value: 'item-2' },
-                    ]}
-                ></Select>
-                <Select
-                    type='secondary'
-                    icon={<ClockIcon className='w-5 h-5' />}
-                    placeholder='10s'
-                    options={[
-                        { label: '20s', value: 'item-1' },
-                        { label: '30s', value: 'item-2' },
-                        { label: '40s', value: 'item-3' },
-                    ]}
-                ></Select>
+            {isLoadingListNpu && <NPUHeadSkeleton />}
+            {!isLoadingListNpu && !isErrorListNpu &&
+                <div className='flex gap-2'>
+                    <span className='px-5 py-[10px] rounded-sm border border-gray-600 text-blue-400 text-sm leading-none flex items-center justify-center'>NPUs</span>
+                    <Select
+                        className='w-[346px]'
+                        type='secondary'
+                        placeholder={npu?.npu_device_name || 'Select NPU'}
+                        options={npuOptions}
+                        onChange={handleChangeNpu}
+                    ></Select>
+                    <Select
+                        type='secondary'
+                        icon={<ClockIcon className='w-5 h-5' />}
+                        placeholder='10s'
+                        options={[
+                            { label: '20s', value: 'item-1' },
+                            { label: '30s', value: 'item-2' },
+                            { label: '40s', value: 'item-3' },
+                        ]}
+                    ></Select>
+                </div>
+            }
+            {isLoading && <NPUContentSkeleton />}
+            {!isLoading && !isError &&
+                <Fragment>
+                    <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
+                        <BlockDataWrapper title='Name' className='col-span-2'>
+                            <BlockDataText dataPrimary={npu?.npu_device_name}></BlockDataText>
+                        </BlockDataWrapper>
+                        <BlockDataWrapper title='Firmware Version'>
+                            <BlockDataText dataPrimary={npu?.firmware_version}></BlockDataText>
+                        </BlockDataWrapper>
+                    </div>
+                    <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
+                        <BlockDataWrapper title='Memory capacity'>
+                            <BlockDataText
+                                data={splitNumberAndCharacter(npu?.memory_capacity)?.number || '0'}
+                                unit={splitNumberAndCharacter(npu?.memory_capacity)?.character || ''}
+                            />
+                        </BlockDataWrapper>
+                        <BlockDataWrapper title='Total Inference count'>
+                            <BlockDataText
+                                data={npu?.inference_count}
+                            />
+                        </BlockDataWrapper>
+                        <BlockDataWrapper title='Server IP'>
+                            <Link href={`/server/${npu?.server_id}`}>
+                                <BlockDataText
+                                    data={npu?.server_ip}
+                                />
+                            </Link>
+                        </BlockDataWrapper>
+                    </div>
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 '>
+                        <BlockDataWrapper title='NPU Utilization'>
+                            <BlockGaugeChart
+                                minValue={0}
+                                maxValue={100}
+                                value={parseFloat(npu?.npu_utilization?.split('%')[0])}
+                                formatText={(value) => `${value || 0}%`}
+                            />
+                        </BlockDataWrapper>
+                        <BlockDataWrapper title='Memory Utilization'>
+                            <BlockGaugeChart
+                                minValue={0}
+                                maxValue={100}
+                                value={parseFloat(npu?.memory_utilization?.split('%')[0])}
+                                formatText={(value) => `${value || 0}%`}
+                            />
+                        </BlockDataWrapper>
+                        <BlockDataWrapper title='Power Usage'>
+                            <BlockGaugeChart
+                                minValue={0}
+                                maxValue={500}
+                                value={splitNumberAndCharacter(npu?.power_usage)?.number || 0}
+                                formatText={(value) => `${value || 0}${splitNumberAndCharacter(npu?.power_usage)?.character || ''}`}
+                            />
+                        </BlockDataWrapper>
+                        <BlockDataWrapper title='Temperature'>
+                            <BlockGaugeChart
+                                minValue={0}
+                                maxValue={100}
+                                value={parseFloat(npu?.temperature?.split('°C')[0])}
+                                formatText={(value) => `${value || 0}°C`}
+                            />
+                        </BlockDataWrapper>
+                    </div>
+                    <div className='grid grid-cols-1 gap-2 '>
+                        <BlockDataWrapper title='Total inference Count'>
+                            <div className='flex justify-end w-full gap-2'>
+                                <Select
+                                    type='secondary'
+                                    placeholder='Top 5 Services'
+                                    options={[
+                                        { label: 'Item 1', value: 'item-1' },
+                                        { label: 'Item 2', value: 'item-2' },
+                                    ]}
+                                ></Select>
+                            </div>
+                            <BlockColumnChart chartSeries={chartSeries} chartColumns={chartColumn} />
+                        </BlockDataWrapper>
+                    </div>
+                    <div className='grid grid-cols-2 gap-2 '>
+                        <BlockDataWrapper title='NPU Utilization'>
+                            <BlockLineChart
+                                data={[{
+                                    name: 'data',
+                                    data: [31, 40, 95, 51, 80, 60, 70]
+                                }]}
+                                categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
+                            ></BlockLineChart>
+                        </BlockDataWrapper>
+                        <BlockDataWrapper title='Memory Utilization'>
+                            <BlockLineChart
+                                data={[{
+                                    name: 'data',
+                                    data: [31, 40, 95, 51, 80, 60, 70]
+                                }]}
+                                categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
+                            ></BlockLineChart>
+                        </BlockDataWrapper>
+                    </div>
+                    <div className='grid grid-cols-2 gap-2 '>
+                        <BlockDataWrapper title='Power Draw'>
+                            <BlockLineChart
+                                data={[{
+                                    name: 'data',
+                                    data: [31, 40, 95, 51, 80, 60, 70]
+                                }]}
+                                categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
+                            ></BlockLineChart>
+                        </BlockDataWrapper>
+                        <BlockDataWrapper title='Temperature'>
+                            <BlockLineChart
+                                data={[{
+                                    name: 'data',
+                                    data: [31, 40, 95, 51, 80, 60, 70]
+                                }]}
+                                categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
+                            ></BlockLineChart>
+                        </BlockDataWrapper>
+                    </div>
+                </Fragment>
+            }
+        </div>
+    )
+}
+
+
+const NPUHeadSkeleton = () => {
+    return (
+        <div className='flex gap-2'>
+            <Skeleton className='w-[200px] h-10' />
+            <Skeleton className='w-[200px] h-10' />
+            <Skeleton className='w-[200px] h-10' />
+        </div>
+    )
+}
+
+const NPUContentSkeleton = () => {
+    return (
+        <Fragment>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
+                <Skeleton className='col-span-2 h-40' />
+                <Skeleton className='h-40' />
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2'>
-                <BlockDataWrapper title='Total CPUs'>
-                    <BlockDataText data="8" unit='CPUs'></BlockDataText>
-                </BlockDataWrapper>
-                <BlockDataWrapper title='Total GPUs'>
-                    <BlockDataText data="8" unit="MB"></BlockDataText>
-                </BlockDataWrapper>
-                <BlockDataWrapper title='Total NPUs'>
-                    <BlockDataText data="4" unit="NPUs"></BlockDataText>
-                </BlockDataWrapper>
-                <BlockDataWrapper title='Total Memory'>
-                    <BlockDataText data="74,965.75" unit="MB"></BlockDataText>
-                </BlockDataWrapper>
-                <BlockDataWrapper title='Total Inference count'>
-                    <BlockDataText data="98"></BlockDataText>
-                </BlockDataWrapper>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
+                <Skeleton className='h-40' />
+                <Skeleton className='h-40' />
+                <Skeleton className='h-40' />
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 '>
-                <BlockDataWrapper title='NPU Utilization'>
-                    <BlockGaugeChart
-                        minValue={0}
-                        maxValue={100}
-                        value={12.2}
-                        formatText={(value) => `${value}%`}
-                    />
-                </BlockDataWrapper>
-                <BlockDataWrapper title='Memory Utilization'>
-                    <BlockGaugeChart
-                        minValue={0}
-                        maxValue={100}
-                        value={34}
-                        formatText={(value) => `${value}%`}
-                    />
-                </BlockDataWrapper>
-                <BlockDataWrapper title='Power Draw'>
-                    <BlockGaugeChart
-                        minValue={0}
-                        maxValue={100}
-                        value={12.2}
-                        formatText={(value) => `${value}%`}
-                    />
-                </BlockDataWrapper>
-                <BlockDataWrapper title='Temperature'>
-                    <BlockGaugeChart
-                        minValue={0}
-                        maxValue={100}
-                        value={12.2}
-                        formatText={(value) => `${value}°C`}
-                    />
-                </BlockDataWrapper>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 '>
+                <Skeleton className='h-40' />
+                <Skeleton className='h-40' />
+                <Skeleton className='h-40' />
+                <Skeleton className='h-40' />
             </div>
             <div className='grid grid-cols-1 gap-2 '>
-                <BlockDataWrapper title='Total inference Count'>
-                    <div className='flex justify-end w-full gap-2'>
-                        <Select
-                            type='secondary'
-                            placeholder='Top 5 Services'
-                            options={[
-                                { label: 'Item 1', value: 'item-1' },
-                                { label: 'Item 2', value: 'item-2' },
-                            ]}
-                        ></Select>
-                    </div>
-                    <BlockColumnChart chartSeries={chartSeries} chartColumns={chartColumn}/>
-                </BlockDataWrapper>
+                <Skeleton className='h-80' />
             </div>
-            <div className='grid grid-cols-2 gap-2 '>
-                <BlockDataWrapper title='NPU Utilization'>
-                    <BlockLineChart
-                        data={[{
-                            name: 'data',
-                            data: [31, 40, 95, 51, 80, 60, 70]
-                        }]}
-                        categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
-                    ></BlockLineChart>
-                </BlockDataWrapper>
-                <BlockDataWrapper title='Memory Utilization'>
-                    <BlockLineChart
-                        data={[{
-                            name: 'data',
-                            data: [31, 40, 95, 51, 80, 60, 70]
-                        }]}
-                        categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
-                    ></BlockLineChart>
-                </BlockDataWrapper>
-            </div>
-            <div className='grid grid-cols-2 gap-2 '>
-                <BlockDataWrapper title='Power Draw'>
-                    <BlockLineChart
-                        data={[{
-                            name: 'data',
-                            data: [31, 40, 95, 51, 80, 60, 70]
-                        }]}
-                        categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
-                    ></BlockLineChart>
-                </BlockDataWrapper>
-                <BlockDataWrapper title='Temperature'>
-                    <BlockLineChart
-                        data={[{
-                            name: 'data',
-                            data: [31, 40, 95, 51, 80, 60, 70]
-                        }]}
-                        categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
-                    ></BlockLineChart>
-                </BlockDataWrapper>
-            </div>
-        </div>
+        </Fragment>
     )
 }

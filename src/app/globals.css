@@ -15,6 +15,17 @@
   a {
     @apply text-blue-500;
   }
+  .scroll-vertical::-webkit-scrollbar {
+    @apply w-1 h-1;
+  }
+  
+  .scroll-vertical::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+  
+  .scroll-vertical::-webkit-scrollbar-thumb {
+    @apply bg-gray-800;
+  }
 }
 @layer utilities {
   
@@ -58,6 +69,9 @@
   padding-left: 241px;
 }
 
+
+
+/* Error  */
 nextjs-portal {
   display: none;
 }

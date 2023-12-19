@@ -26,13 +26,14 @@ const chartColumn: string[] = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 
 
 export default function ClusterOverview() {
     const current_user_id = useAppSelector(state => state.GlobalStore.current_user_id);
-    const user_email = useAppSelector(state => state.AuthStore.user?.email);
-    const { isLoading, cluster, isError } = useClusterApi(current_user_id || user_email || '')
+    const user_id = useAppSelector(state => state.AuthStore.user?.id);
+    const { isLoading, cluster, isError } = useClusterApi(current_user_id || user_id || '')
+    
     if(isLoading) return <ClusterOverviewSkeleton />
     if(isError) return <ChartEmpty />
+
     return (
-        <div className='flex flex-col gap-2 pb-28'>
-            {isError && <Alert type='error' message='This user do not have any cluster' />}
+        <div className='flex flex-col gap-2'>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2'>
                 <BlockDataWrapper title='Total CPU Cores'>
                     <BlockDataText data={cluster?.total_cpu_cores || '--'} unit='CPU'></BlockDataText>
@@ -58,7 +59,7 @@ export default function ClusterOverview() {
                     <BlockGaugeChart minValue={0} maxValue={100} value={parseFloat(cluster?.avg_npu_utilization?.split('%')[0])} formatText={(value) => `${value || 0}%`}/>
                 </BlockDataWrapper>
             </div>
-            <div className='grid grid-cols-1 gap-2 '>
+            <div className='grid grid-cols-1 gap-2'>
                 <BlockDataWrapper title='Total inference Count'>
                     <div className='flex justify-end w-full gap-2'>
                         <Select
@@ -73,7 +74,9 @@ export default function ClusterOverview() {
                     <BlockColumnChart chartSeries={chartSeries} chartColumns={chartColumn}/>
                 </BlockDataWrapper>
             </div>
-            <Table columns={serverColumn} dataSource={cluster?.servers}></Table>
+            <div className='w-full overflow-auto'>
+                <Table columns={serverColumn} dataSource={cluster?.servers} className='w-full min-w-[700px]'></Table>
+            </div>
         </div>
     )
 }
@@ -82,7 +85,6 @@ export default function ClusterOverview() {
 const ClusterOverviewSkeleton = () => {
     return (
         <div className='flex flex-col gap-2 pb-28'>
-            <Skeleton></Skeleton>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2'>
                 <Skeleton className='h-[250px]'/>
                 <Skeleton className='h-[250px]'/>
