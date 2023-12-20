@@ -98,8 +98,8 @@ function Server({ params }: { params: { serverId: string } }) {
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Total Memory'>
                             <BlockDataText
-                                data={splitNumberAndCharacter(server?.memory)?.number || '0'}
-                                unit={splitNumberAndCharacter(server?.memory)?.character || ''}
+                                data={server?.memory || '0'}
+                                unit={'MB'}
                             />
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Total Inference count'>
@@ -111,7 +111,7 @@ function Server({ params }: { params: { serverId: string } }) {
                             <BlockGaugeChart
                                 minValue={0}
                                 maxValue={100}
-                                value={parseFloat(server?.cpu_utilization?.split('%')[0])}
+                                value={server?.cpu_utilization}
                                 formatText={(value) => `${value || 0}%`}
                             />
                         </BlockDataWrapper>
@@ -119,7 +119,7 @@ function Server({ params }: { params: { serverId: string } }) {
                             <BlockGaugeChart
                                 minValue={0}
                                 maxValue={100}
-                                value={parseFloat(server?.gpu_utilization?.split('%')[0])}
+                                value={server?.gpu_utilization}
                                 formatText={(value) => `${value || 0}%`}
                             />
                         </BlockDataWrapper>
@@ -127,7 +127,7 @@ function Server({ params }: { params: { serverId: string } }) {
                             <BlockGaugeChart
                                 minValue={0}
                                 maxValue={100}
-                                value={parseFloat(server?.npu_utilization?.split('%')[0])}
+                                value={server?.npu_utilization}
                                 formatText={(value) => `${value || 0}%`}
                             />
                         </BlockDataWrapper>
@@ -135,7 +135,7 @@ function Server({ params }: { params: { serverId: string } }) {
                             <BlockGaugeChart
                                 minValue={0}
                                 maxValue={100}
-                                value={parseFloat(server?.memory_utilization?.split('%')[0])}
+                                value={server?.memory_utilization}
                                 formatText={(value) => `${value || 0}%`}
                             />
                         </BlockDataWrapper>

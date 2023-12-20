@@ -8,7 +8,7 @@ import Button from '@/components/shared/Button'
 import { TableColumn } from '@/core/interfaces'
 import Table from '@/components/shared/Table'
 import { toast } from '@/services/toast.service'
-import Modal from '@/components/shared/Modal';
+import Modal from '@/components/shared/Modal'; 
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 
 const columns: TableColumn[] = [

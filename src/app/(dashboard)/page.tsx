@@ -48,13 +48,28 @@ export default function ClusterOverview() {
             </div>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-2 '>
                 <BlockDataWrapper title='Avg CPU Utilization'>
-                    <BlockGaugeChart minValue={0} maxValue={100} value={parseFloat(cluster?.avg_cpu_utilization?.split('%')[0])} formatText={(value) => `${value || 0}%`}/>
+                    <BlockGaugeChart 
+                        minValue={0} 
+                        maxValue={100} 
+                        value={cluster?.avg_cpu_utilization} 
+                        formatText={(value) => `${value || 0}%`}
+                    />
                 </BlockDataWrapper>
                 <BlockDataWrapper title='Avg GPU Utilization'>
-                    <BlockGaugeChart minValue={0} maxValue={100} value={parseFloat(cluster?.avg_gpu_utilization?.split('%')[0])} formatText={(value) => `${value || 0}%`}/>
+                    <BlockGaugeChart 
+                        minValue={0} 
+                        maxValue={100} 
+                        value={cluster?.avg_gpu_utilization} 
+                        formatText={(value) => `${value || 0}%`}
+                    />  
                 </BlockDataWrapper>
                 <BlockDataWrapper title='Avg NPU Utilization'>
-                    <BlockGaugeChart minValue={0} maxValue={100} value={parseFloat(cluster?.avg_npu_utilization?.split('%')[0])} formatText={(value) => `${value || 0}%`}/>
+                    <BlockGaugeChart 
+                        minValue={0} 
+                        maxValue={100} 
+                        value={cluster?.avg_npu_utilization} 
+                        formatText={(value) => `${value || 0}%`}
+                    />
                 </BlockDataWrapper>
             </div>
             <div className='grid grid-cols-1 gap-2'>

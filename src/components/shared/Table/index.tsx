@@ -68,7 +68,7 @@ function Table({
                         {columns.map((column) => (
                             <td key={column.field} className={twMerge('p-4')}>
                                 {column.type === 'text' && 
-                                    <p className={column.className}>{row[column.field]}</p>
+                                    <p className={column.className}>{column?.formatValue ? column.formatValue(row[column.field]) : row[column.field]}</p>
                                 }
                                 {column && column.type === 'link' && column.link_field &&
                                     <Link href={column.link_field(row) || '/'} className={twMerge( 'hover:underline transition-all',column.className)}>{row[column.field]}</Link>
