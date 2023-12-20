@@ -127,8 +127,8 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                     <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
                         <BlockDataWrapper title='Memory capacity'>
                             <BlockDataText
-                                data={splitNumberAndCharacter(npu?.memory_capacity)?.number || '0'}
-                                unit={splitNumberAndCharacter(npu?.memory_capacity)?.character || ''}
+                                data={npu?.memory_capacity}
+                                unit="MB"
                             />
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Total Inference count'>
@@ -149,7 +149,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                             <BlockGaugeChart
                                 minValue={0}
                                 maxValue={100}
-                                value={parseFloat(npu?.npu_utilization?.split('%')[0])}
+                                value={npu?.npu_utilization}
                                 formatText={(value) => `${value || 0}%`}
                             />
                         </BlockDataWrapper>
@@ -157,7 +157,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                             <BlockGaugeChart
                                 minValue={0}
                                 maxValue={100}
-                                value={parseFloat(npu?.memory_utilization?.split('%')[0])}
+                                value={npu?.memory_utilization}
                                 formatText={(value) => `${value || 0}%`}
                             />
                         </BlockDataWrapper>
@@ -165,15 +165,15 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                             <BlockGaugeChart
                                 minValue={0}
                                 maxValue={500}
-                                value={splitNumberAndCharacter(npu?.power_usage)?.number || 0}
-                                formatText={(value) => `${value || 0}${splitNumberAndCharacter(npu?.power_usage)?.character || ''}`}
+                                value={npu?.power_usage}
+                                formatText={(value) => `${value || 0}W`}
                             />
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Temperature'>
                             <BlockGaugeChart
                                 minValue={0}
                                 maxValue={100}
-                                value={parseFloat(npu?.temperature?.split('°C')[0])}
+                                value={npu?.temperature}
                                 formatText={(value) => `${value || 0}°C`}
                             />
                         </BlockDataWrapper>

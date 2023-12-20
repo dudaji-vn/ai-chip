@@ -5,4 +5,5 @@ export interface TableColumn {
     className?: string;
     type: string;
     link_field?: (row: any) => string;
+    formatValue?: (value: any) => string;
 }
