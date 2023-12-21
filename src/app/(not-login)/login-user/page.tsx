@@ -22,7 +22,7 @@ export default function LoginUser() {
 
     return (
         <div className="w-full h-screen flex items-center justify-center bg-gray-900 text-white">
-            <div className="p-8 w-full max-w-[460px] text-center bg-gray-800 rounded-sm border border-gray-700 flex flex-col ">
+            <div className="p-8 w-full max-w-[460px] text-center bg-gray-800 rounded-sm border border-gray-700 flex flex-col mx-4">
                 <div className='p-8 flex flex-col gap-8'>
                     <Typography tag='h1' size="4xl">promitor</Typography>
                     <div>

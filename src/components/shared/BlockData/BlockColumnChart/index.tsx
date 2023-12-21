@@ -3,13 +3,14 @@
 import Series from '@/core/interfaces/series.interface';
 // import ReactApexChart from 'react-apexcharts';
 import dynamic from 'next/dynamic';
+import { memo } from 'react';
 
 interface Props {
     chartSeries: Series[];
     chartColumns: string[];
 }
 
-export default function BlockColumnChart({ chartSeries, chartColumns } : Props) {
+function BlockColumnChart({ chartSeries, chartColumns } : Props) {
     const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
     return (
         <div className='w-full barchart'>
@@ -68,3 +69,5 @@ export default function BlockColumnChart({ chartSeries, chartColumns } : Props) 
         </div>
     )
 }
+
+export default memo(BlockColumnChart);

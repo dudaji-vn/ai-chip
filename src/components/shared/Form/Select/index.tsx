@@ -28,7 +28,7 @@ const SelectMemo = ({ className, label, placeholder, icon, options, type =  'pri
     const ref = useOnClickOutside(() => {
         setIsOpen(false);
     });
-    const selectItem = (value: string) => () => {
+    const selectItem = (value: string | number) => () => {
         let label = options.find(option => option.value === value)?.label || null;
         setSelected(label);
         setIsOpen(false);
