@@ -5,7 +5,7 @@ import { successResponseInterceptor } from '@/core/interceptors/success-response
 import { errorResponseInterceptor } from '@/core/interceptors/error-response-interceptor'
 
 const config = {
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL + '/api/v1/',
+  baseURL: process.env.NEXT_PUBLIC_DOMAIN + '/api/v1/',
   timeout: 10000,
 }
 

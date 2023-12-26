@@ -16,7 +16,7 @@ export default function handler(
 ) {
     return new Promise(() => {
         proxy.web(req, res, {
-            target: 'http://localhost:4000',
+            target: process.env.NEXT_PUBLIC_API_URL,
             changeOrigin: true,
             selfHandleResponse: false,
         });
