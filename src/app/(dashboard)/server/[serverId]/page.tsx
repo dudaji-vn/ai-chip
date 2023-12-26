@@ -20,6 +20,7 @@ import { gpuColumn, npuColumn } from '@/core/column';
 import Skeleton from '@/components/shared/Skeleton';
 import { useRouter } from 'next/navigation';
 import ChartEmpty from '@/components/shared/ChartEmpty';
+import { intervalTime } from '@/core/constant';
 
 const chartSeries: Series[] = [
     { name: 'Net Profit', data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
@@ -35,10 +36,11 @@ function Server({ params }: { params: { serverId: string } }) {
     const router = useRouter();
     const current_user_id = useAppSelector<string>(state => state.GlobalStore.current_user_id);
     const user_id = useAppSelector<string | undefined>(state => state.AuthStore.user?.id);
+    const [timer, setTimer] = React.useState<number>(0);
 
     let serverId = params?.serverId || '';
 
-    const { isLoading, server, isError } = useServerDetailApi(serverId || '')
+    const { isLoading, server, isError } = useServerDetailApi(serverId || '', timer)
     const { isLoading: isLoadingCluster, cluster, isError: isErrorCluster } = useClusterApi(current_user_id || user_id || '')
     const serverList = cluster?.servers?.map((server: any) => ({ label: server.server_ip, value: server.server_id })) || []
 
@@ -48,13 +50,14 @@ function Server({ params }: { params: { serverId: string } }) {
     }, [router])
 
     useEffect(() => {
-        if (server && server.user_id) {
-            if (current_user_id !== server.user_id) {
-                dispatch(changeCurrentUserId(server.user_id))
-            }
+        if (server && server.user_id && current_user_id !== server.user_id) {
+            dispatch(changeCurrentUserId(server.user_id))
         }
     }, [current_user_id, dispatch, server])
 
+    const onChangeTimer = (value: string | number) => {
+        setTimer(parseInt(value.toString()))
+    }
 
     return (
         <div className='flex flex-col gap-2'>
@@ -69,15 +72,12 @@ function Server({ params }: { params: { serverId: string } }) {
                         options={serverList}
                         onChange={handleChangeServer}
                     ></Select>
-                    <Select
+                   <Select
                         type='secondary'
                         icon={<ClockIcon className='w-5 h-5' />}
-                        placeholder='10s'
-                        options={[
-                            { label: '20s', value: 'item-1' },
-                            { label: '30s', value: 'item-2' },
-                            { label: '40s', value: 'item-3' },
-                        ]}
+                        placeholder='Timer'
+                        options={intervalTime}
+                        onChange={onChangeTimer}
                     ></Select>
                     <Status status={server?.server_status} />
                 </div>

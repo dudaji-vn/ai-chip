@@ -28,7 +28,7 @@ const SelectMemo = ({ className, label, placeholder, icon, options, type =  'pri
     const ref = useOnClickOutside(() => {
         setIsOpen(false);
     });
-    const selectItem = (value: string) => () => {
+    const selectItem = (value: string | number) => () => {
         let label = options.find(option => option.value === value)?.label || null;
         setSelected(label);
         setIsOpen(false);
@@ -51,9 +51,9 @@ const SelectMemo = ({ className, label, placeholder, icon, options, type =  'pri
                 <ChevronDownIcon className={twMerge('w-5 h-5 transition-all', isOpen? 'rotate-180' : '')} />
             </div>
             {isOpen && (
-                <div className='absolute top-[calc(100%+5px)] left-0 w-full bg-gray-800 rounded-lg py-1 overflow-y-auto max-h-52 z-10 shadow-xl scroll-vertical'>
+                <div className='absolute top-[calc(100%+5px)] left-0 w-full bg-gray-700 rounded-lg py-1 overflow-y-auto max-h-52 z-20 shadow-xl scroll-vertical'>
                     {options.map((option, index) => (
-                        <div key={index} className='py-2 px-4 cursor-pointer hover:bg-gray-700 transition-all' onClick={selectItem(option.value)}>
+                        <div key={index} className='py-2 px-4 cursor-pointer hover:bg-gray-600 transition-all' onClick={selectItem(option.value)}>
                             <span className='text-sm text-gray-400'>{option.label}</span>
                         </div>
                     ))}

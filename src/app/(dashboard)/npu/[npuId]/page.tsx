@@ -4,7 +4,6 @@ import { BlockDataText, BlockDataWrapper } from '@/components/shared/BlockData'
 import BlockColumnChart from '@/components/shared/BlockData/BlockColumnChart';
 import BlockGaugeChart from '@/components/shared/BlockData/BlockGaugeChart';
 import BlockLineChart from '@/components/shared/BlockData/BlockLineChart';
-import { TableColumn } from '@/core/interfaces/table-column.interface';
 import Series from '@/core/interfaces/series.interface';
 import React, { Fragment, useCallback, useEffect } from 'react'
 import { Select } from '@/components/shared/Form';
@@ -13,28 +12,10 @@ import useNpuApi from '@/core/hooks/api/useNpuApi';
 import { useAppDispatch, useAppSelector } from '@/stores';
 import useNpuDetailApi from '@/core/hooks/api/useNpuDetailApi';
 import { changeBreadcrumb, changeCurrentUserId } from '@/stores/slice/global.slice';
-import splitNumberAndCharacter from '@/utils/splitNumberAndCharacter';
 import Link from 'next/link';
 import Skeleton from '@/components/shared/Skeleton';
 import { useRouter } from 'next/navigation';
-
-const dataSource = [
-    { server_ip: '192.168.1.10', hostname: 'server-1', status: 'Ready', role: 'Manager', cpu: 36, gpu: 36, npu: 54, link: '/cluster/123456789' },
-    { server_ip: '10.0.0.20', hostname: 'server-2', status: 'Ready', role: 'Worker', cpu: 36, gpu: 36, npu: 54, link: '/cluster/123456789' },
-    { server_ip: '192.168.1.100', hostname: 'server-3', status: 'Not Ready', role: 'Communication', cpu: 36, gpu: 36, npu: 54, link: '/cluster/123456789' },
-    { server_ip: '172.16.0.15', hostname: 'server-4', status: 'Ready', role: 'Manager', cpu: 36, gpu: 36, npu: 54, link: '/cluster/123456789' },
-    { server_ip: '10.1.1.30', hostname: 'server-5', status: 'Ready', role: 'Worker', cpu: 36, gpu: 36, npu: 54, link: '/cluster/123456789' },
-];
-
-const columns: TableColumn[] = [
-    { header: 'Server IP', field: 'server_ip', type: 'link' },
-    { header: 'Hostname', field: 'hostname', type: 'text' },
-    { header: 'Status', field: 'status', type: 'status' },
-    { header: 'Role', field: 'role', type: 'text', classNameCol: 'w-[120px]' },
-    { header: 'CPUs Counts', field: 'cpu', type: 'text', classNameCol: 'w-[120px]', className: 'text-right' },
-    { header: 'GPUs Counts', field: 'gpu', type: 'text', classNameCol: 'w-[120px]', className: 'text-right' },
-    { header: 'NPU Counts', field: 'npu', type: 'text', classNameCol: 'w-[120px]', className: 'text-right' },
-]
+import { intervalTime } from '@/core/constant';
 
 const chartSeries: Series[] = [
     { name: 'Net Profit', data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
@@ -46,6 +27,8 @@ const chartSeries: Series[] = [
 const chartColumn: string[] = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
 
 export default function NPU({ params }: { params: { npuId: string } }) {
+    const [npuRealtimeData, setNpuRealtimeData] = React.useState<any>({});
+    const [timer, setTimer] = React.useState<null | number>(null);
 
     const dispatch = useAppDispatch();
     const router = useRouter();
@@ -53,15 +36,16 @@ export default function NPU({ params }: { params: { npuId: string } }) {
     const current_user_id = useAppSelector(state => state.GlobalStore.current_user_id);
     const breadcrumb = useAppSelector(state => state.GlobalStore.breadcrumb);
     const user_id = useAppSelector(state => state.AuthStore.user?.id);
-
+    
     let npuId = params?.npuId || '';
 
     const { isLoading: isLoadingListNpu, npus, isError: isErrorListNpu } = useNpuApi(current_user_id || user_id || '')
-    const { isLoading, npu, isError } = useNpuDetailApi(npuId || '')
-
-    const npuOptions = npus?.filter((item: any) => item?.server_id === npu?.server_id) // filter npu by server_id
+    const { isLoading, npu, isError } = useNpuDetailApi(npuId || '', timer)
+    
+    const npuList = npus?.filter((item: any) => item?.server_id === npu?.server_id) // filter npu by server_id
                             ?.map((npu: any) => ({ label: npu.npu_device_name, value: npu.npu_id }))  // map npu to option
                             || []
+    
 
     const handleChangeNpu = useCallback((value: string) => {
         if (!value) return;
@@ -88,6 +72,32 @@ export default function NPU({ params }: { params: { npuId: string } }) {
         }
     }, [breadcrumb?.server?.id, dispatch, npu])
 
+    useEffect(() => {
+        if (!npu) return;
+        if(!timer) {
+            if(Object.keys(npuRealtimeData).length == 0 ) {
+                setNpuRealtimeData({ [new Date().getTime()]: npu });
+            }
+            return;
+        }
+
+        let timerId = setInterval(() => {
+            setNpuRealtimeData((prev: any) => {
+                return {
+                    ...prev,
+                    [new Date().getTime()]: npu
+                }
+            })
+        }, timer);
+
+        return () => clearInterval(timerId);
+
+    }, [npu, npuRealtimeData, timer])
+
+    const onChangeTimer = (value: string | number) => {
+        setTimer(parseInt(value.toString()))
+    }
+
     return (
         <div className='flex flex-col gap-2'>
             {isLoadingListNpu && <NPUHeadSkeleton />}
@@ -98,18 +108,15 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                         className='w-[346px]'
                         type='secondary'
                         placeholder={npu?.npu_device_name || 'Select NPU'}
-                        options={npuOptions}
+                        options={npuList}
                         onChange={handleChangeNpu}
                     ></Select>
                     <Select
                         type='secondary'
                         icon={<ClockIcon className='w-5 h-5' />}
-                        placeholder='10s'
-                        options={[
-                            { label: '20s', value: 'item-1' },
-                            { label: '30s', value: 'item-2' },
-                            { label: '40s', value: 'item-3' },
-                        ]}
+                        placeholder='Timer'
+                        options={intervalTime}
+                        onChange={onChangeTimer}
                     ></Select>
                 </div>
             }
@@ -196,40 +203,39 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-2 '>
                         <BlockDataWrapper title='NPU Utilization'>
                             <BlockLineChart
-                                data={[{
-                                    name: 'data',
-                                    data: [31, 40, 95, 51, 80, 60, 70]
-                                }]}
-                                categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
+                                data={Object.keys(npuRealtimeData).map((key: any) => npuRealtimeData[key]?.npu_utilization || 0)}
+                                labels={Object.keys(npuRealtimeData).map(item => parseInt(item))}
                             ></BlockLineChart>
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Memory Utilization'>
                             <BlockLineChart
-                                data={[{
-                                    name: 'data',
-                                    data: [31, 40, 95, 51, 80, 60, 70]
-                                }]}
-                                categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
+                                data={Object.keys(npuRealtimeData).map((key: any) => npuRealtimeData[key]?.memory_utilization || 0)}
+                                labels={Object.keys(npuRealtimeData).map(item => parseInt(item))}
+                                divided_y={5}
+                                min={0}
+                                max={200}
+                                formatY={(val: number) => val + 'MB'}
                             ></BlockLineChart>
                         </BlockDataWrapper>
                     </div>
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-2 '>
                         <BlockDataWrapper title='Power Draw'>
                             <BlockLineChart
-                                data={[{
-                                    name: 'data',
-                                    data: [31, 40, 95, 51, 80, 60, 70]
-                                }]}
-                                categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
+                                data={Object.keys(npuRealtimeData).map((key: any) => npuRealtimeData[key]?.power_usage || 0)}
+                                labels={Object.keys(npuRealtimeData).map(item => parseInt(item))}
+                                divided_y={5}
+                                min={0}
+                                max={200}
+                                formatY={(val: number) => val + 'W'}
                             ></BlockLineChart>
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Temperature'>
                             <BlockLineChart
-                                data={[{
-                                    name: 'data',
-                                    data: [31, 40, 95, 51, 80, 60, 70]
-                                }]}
-                                categories={["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]}
+                                data={Object.keys(npuRealtimeData).map((key: any) => npuRealtimeData[key]?.temperature || 0)}
+                                labels={Object.keys(npuRealtimeData).map(item => parseInt(item))}
+                                min={0}
+                                max={100}
+                                formatY={(val: number) => val + '°C'}
                             ></BlockLineChart>
                         </BlockDataWrapper>
                     </div>

@@ -30,7 +30,7 @@ export default function LoginAdmin() {
 
     return (
         <div className="w-full h-screen flex items-center justify-center bg-gray-900 text-white">
-            <form onSubmit={onSubmit} className="p-8 w-full max-w-[460px] text-center bg-gray-800 rounded-sm border border-gray-700">
+            <form onSubmit={onSubmit} className="p-8 w-full max-w-[460px] text-center bg-gray-800 rounded-sm border border-gray-700 mx-4">
                 <Typography tag='h1' size="4xl" className="mb-12">promitor</Typography>
                 <Input 
                     label='Email'
