@@ -3,7 +3,7 @@
 
 ### Quickstart
 
-* build and deploy on gcp ( 34.64.215.36)
+* build and deploy on gcp 
 ```bash
 ./quick.sh
 ```
@@ -23,13 +23,6 @@ curl localhost:5556/api/v1/servers
 curl localhost:5556/api/v1/npus
 ```
 
-* test API on global
-```bash
-curl 34.64.215.36:5555/api/v1/users
-curl 34.64.215.36:5555/api/v1/clusters
-curl 34.64.215.36:5555/api/v1/servers
-curl 34.64.215.36:5555/api/v1/npus
-```
 
 ### generator.py
 * make mock data for user (fixed)
