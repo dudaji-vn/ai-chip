@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  mock-server:
+    image: localhost/ai-chip-mock-server:${VERSION}
+    ports:
+      - "5555:5556"
+    restart: always
+    volumes:
+      - ./logs:/app/logs
+    env_file:
+      - ./.env
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - "8087:8086"
+    environment:
+      INFLUXDB_DB: "ai-chip-monitor"
+      INFLUXDB_ADMIN_USER: "dudaji"
+      INFLUXDB_ADMIN_PASSWORD: "dudaji1234"
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+volumes:
+  influxdb-data:
+    driver: local

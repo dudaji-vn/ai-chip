@@ -1,0 +1,20 @@
+# Copyright DUDAJI Inc. All rights reserved.
+#  ____  _     ____  ____     _  _
+# /  _ \/ \ /\/  _ \/  _ \   / |/ \
+# | | \|| | ||| | \|| / \|   | || |
+# | |_/|| \_/|| |_/|| |-||/\_| || |
+# \____/\____/\____/\_/ \|\____/\_/
+
+# Source for the following rules: https://raw.githubusercontent.com/github/gitignore/master/Python.gitignore
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# Editors
+.vscode/
+vscode
+
+# env
+.env
