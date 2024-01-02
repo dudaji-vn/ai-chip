@@ -1,19 +1,32 @@
 "use client";
 
-import Series from "@/core/interfaces/series.interface";
-// import ReactApexChart from 'react-apexcharts';
 import dynamic from 'next/dynamic';
 
-
 interface Props {
-    data: Series[];
-    categories: string[];
+    data: number[];
+    labels: number[];
+    divided_y?: number;
+    formatY?: (val: any) => string;
+    min?: number;
+    max?: number;
 }
+const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
+const BlockLineChart = ({ 
+    data, 
+    labels, 
+    divided_y = 4, 
+    formatY = (val: number) => val.toFixed(0) + "%",
+    min = 0,
+    max = 100,
+}: Props) => {
 
-export default function BlockLineChart({ data, categories }: Props) {
-    const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
-    
+    const generateColor = (val:number) => {
+        if(val > (max - min) / 100 * 90) return ['#F05252'];
+        if(val > (max - min) / 100 * 75) return ['#C27803'];
+        return ['#0E9F6E'];
+    }
+
     return (
         <div className="w-full">
             <ReactApexChart
@@ -21,42 +34,30 @@ export default function BlockLineChart({ data, categories }: Props) {
                     annotations: {
                         yaxis: [
                             {
-                                y: 75,
+                                y: (max - min) / 100 * 75,
                                 borderColor: '#C27803',
                                 strokeDashArray: 0,
                                 borderWidth: 1,
                                 fillColor: '#C27803',
                                 opacity: 0.2,
                             },
-                            // {
-                            //     y: 75,
-                            //     y2: 90,
-                            //     fillColor: '#C27803',
-                            //     opacity: 0.2,
-                            // },
                             {
-                                y: 90,
+                                y: (max - min) / 100 * 90,
                                 borderColor: '#F05252',
                                 fillColor: '#F05252',
                                 strokeDashArray: 0,
                                 borderWidth: 1,
                                 opacity: 0.4,
                             },
-                            // {
-                            //     y: 90,
-                            //     y2: 100,
-                            //     borderColor: '#F05252',
-                            //     fillColor: '#F05252',
-                            //     strokeDashArray: 0,
-                            //     borderWidth: 3,
-                            //     opacity: 0.2,
-                            // }
                         ]
                     },
                     chart: {
                         type: 'area',
                         height: 200,
                         background: '#1f2937',
+                        animations: {
+                            enabled: false,
+                        }
                     },
                     dataLabels: {
                         enabled: false
@@ -66,35 +67,30 @@ export default function BlockLineChart({ data, categories }: Props) {
                     },
                     xaxis: {
                         type: 'datetime',
-                        categories: categories
+                        categories: labels,
                     },
                     yaxis: {
-                        min: 0,
-                        max: 100,
-                        tickAmount: 4,
+                        min: min,
+                        max: max,
+                        tickAmount: divided_y,
                         labels: {
-                            formatter: function (val: any) {
-                                return val.toFixed(0) + "%";
-                            }
+                            formatter: formatY
                         },
-                        // title: {
-                        //     text: 'Percent'
-                        // },
-                    },
-                    tooltip: {
-                        x: {
-                            // format: 'dd/MM/yy HH:mm'
-                        },
-                        // enabled: false
                     },
                     theme: { mode: 'dark' },
-                    colors: ['#0E9F6E'],
-                    grid: {
-                        borderColor: '#374151',
-                    }
+                    colors: generateColor(data[data.length - 1]),
+                    grid: { borderColor: '#374151' },
                 }}
-                series={data}
-                type="area" height={350}  width={"100%"}/>
+                series={[
+                    {
+                        name: "Data",
+                        data: data
+                    }
+                ]}
+                type="area" height={350} width={"100%"} />
         </div>
     )
 }
+
+
+export default BlockLineChart;

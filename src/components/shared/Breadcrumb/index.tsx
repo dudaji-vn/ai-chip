@@ -30,20 +30,20 @@ export default memo(function Breadcrumb() {
     }, [pathname, router])
 
     return (
-        <div className='flex-1 text-gray-400 hidden md:flex items-center justify-start gap-4 text-sm font-medium leading-normal'>
-            <Link href='/' className='hover:text-white transition-all cursor-pointer text-inherit'>
+        <div className='flex-1 text-blue-500 hidden md:flex items-center justify-start gap-4 text-sm font-medium leading-normal'>
+            <Link href='/' className='hover:text-blue-500/80  transition-all cursor-pointer text-inherit'>
                 <HomeIcon className="h-5 w-5 text-inherit" />
             </Link>
             {breadcrumb.map((item, index) => (
                 <div key={index} className='flex items-center gap-2'>
                     {index > 0 && <p><ChevronRightIcon className='h-5 w-5 text-inherit'/></p>}
-                    {item.path && <Link href={item.path} className='text-inherit hover:text-white transition-all'>{item.label}</Link>}
+                    {item.path && <Link href={item.path} className='text-inherit hover:text-blue-500/80 transition-all'>{item.label}</Link>}
                     {item.dynamic_path && globalBreadcrumb[item.dynamic_path] &&
-                        <Link href={globalBreadcrumb[item.dynamic_path].link} className='text-inherit hover:text-white transition-all'>
+                        <Link href={globalBreadcrumb[item.dynamic_path].link} className='text-inherit hover:text-blue-500/80 transition-all'>
                             {globalBreadcrumb[item.dynamic_path].title}
                         </Link>
                     }
-                    {!item.path && !item.dynamic_path && <p>{item.label}</p>}
+                    {!item.path && !item.dynamic_path && <p className='text-white'>{item.label}</p>}
                 </div>
             ))}
         </div>

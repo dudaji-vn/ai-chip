@@ -12,6 +12,8 @@ import { serverColumn } from '@/core/column';
 import { useAppSelector } from '@/stores';
 import Skeleton from '@/components/shared/Skeleton';
 import ChartEmpty from '@/components/shared/ChartEmpty';
+import { ClockIcon } from '@heroicons/react/24/outline';
+import { intervalTime } from '@/core/constant';
 
 const chartSeries: Series[] = [
     { name: 'Net Profit', data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
@@ -25,13 +27,28 @@ const chartColumn: string[] = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 
 export default function ClusterOverview() {
     const current_user_id = useAppSelector(state => state.GlobalStore.current_user_id);
     const user_id = useAppSelector(state => state.AuthStore.user?.id);
-    const { isLoading, cluster, isError } = useClusterApi(current_user_id || user_id || '')
+    const [timer, setTimer] = React.useState<number>(0);
+    const { isLoading, cluster, isError } = useClusterApi(current_user_id || user_id || '', timer)
     
     if(isLoading) return <ClusterOverviewSkeleton />
     if(isError) return <ChartEmpty />
 
+    const onChangeTimer = (value: string | number) => {
+        setTimer(parseInt(value.toString()))
+    }
+    
     return (
         <div className='flex flex-col gap-2'>
+            <div className='flex gap-2'>
+                    <span className='px-5 py-[10px] rounded-sm border border-gray-600 text-blue-400 text-sm leading-none flex items-center justify-center capitalize'>{cluster?.cluster_id}</span>
+                   <Select
+                        type='secondary'
+                        icon={<ClockIcon className='w-5 h-5' />}
+                        placeholder='Timer'
+                        options={intervalTime}
+                        onChange={onChangeTimer}
+                    ></Select>
+                </div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2'>
                 <BlockDataWrapper title='Total CPU Cores'>
                     <BlockDataText data={cluster?.total_cpu_cores || '--'} unit='CPU'></BlockDataText>
