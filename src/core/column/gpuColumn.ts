@@ -19,6 +19,6 @@ export const gpuColumn: TableColumn[] = [
         type: 'text', 
         classNameCol: 'text-right w-[250px]', 
         className: 'text-right', 
-        formatValue: (value: any) => `${value}MB` 
+        formatValue: (value: any) => `${value}GB` 
     },
 ]

@@ -47,7 +47,7 @@ export default memo(function Header({ toggleSidebar } : Props)  {
     }
 
     return (
-        <header className="fixed top-0 left-0 right-0 p-6 bg-gray-900 flex items-center justify-center gap-8 z-20 border-b border-gray-700 h-[80px]">
+        <header className="fixed top-0 left-0 right-0 p-6 bg-gray-900 flex items-center justify-center gap-8 z-30 border-b border-gray-700 h-[80px]">
             <div className="p-2 hover:bg-slate-700 rounded-md transition-all cursor-pointer" onClick={toggleSidebar}>
                 <Bars3CenterLeftIcon className="h-5 w-5 text-white"/>
             </div>

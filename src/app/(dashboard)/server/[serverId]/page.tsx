@@ -3,9 +3,7 @@
 import { BlockDataText, BlockDataWrapper } from '@/components/shared/BlockData'
 import BlockColumnChart from '@/components/shared/BlockData/BlockColumnChart';
 import BlockGaugeChart from '@/components/shared/BlockData/BlockGaugeChart';
-import BlockLineChart from '@/components/shared/BlockData/BlockLineChart';
 import Table from '@/components/shared/Table'
-import { TableColumn } from '@/core/interfaces/table-column.interface';
 import Series from '@/core/interfaces/series.interface';
 import React, { Fragment, memo, useCallback, useEffect } from 'react'
 import { Select } from '@/components/shared/Form';
@@ -15,7 +13,6 @@ import useServerDetailApi from '@/core/hooks/api/useServerDetailApi';
 import useClusterApi from '@/core/hooks/api/useClusterApi';
 import { changeCurrentUserId } from '@/stores/slice/global.slice';
 import Status from '@/components/shared/Status';
-import splitNumberAndCharacter from '@/utils/splitNumberAndCharacter';
 import { gpuColumn, npuColumn } from '@/core/column';
 import Skeleton from '@/components/shared/Skeleton';
 import { useRouter } from 'next/navigation';
@@ -99,7 +96,7 @@ function Server({ params }: { params: { serverId: string } }) {
                         <BlockDataWrapper title='Total Memory'>
                             <BlockDataText
                                 data={server?.memory || '0'}
-                                unit={'MB'}
+                                unit={'GB'}
                             />
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Total Inference count'>
