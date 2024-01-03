@@ -135,7 +135,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                         <BlockDataWrapper title='Memory capacity'>
                             <BlockDataText
                                 data={npu?.memory_capacity}
-                                unit="MB"
+                                unit="GB"
                             />
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Total Inference count'>
@@ -165,7 +165,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                                 minValue={0}
                                 maxValue={100}
                                 value={npu?.memory_utilization}
-                                formatText={(value) => `${value || 0}%`}
+                                formatText={(value) => `${value || 0}GB`}
                             />
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Power Usage'>
@@ -214,7 +214,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
                                 divided_y={5}
                                 min={0}
                                 max={200}
-                                formatY={(val: number) => val + 'MB'}
+                                formatY={(val: number) => val + 'GB'}
                             ></BlockLineChart>
                         </BlockDataWrapper>
                     </div>

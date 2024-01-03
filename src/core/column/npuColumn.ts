@@ -2,7 +2,7 @@ import { TableColumn } from "../interfaces";
 
 export const npuColumn: TableColumn[] = [
     { 
-        header: 'GPU', 
+        header: 'NPU', 
         field: 'npu_id', 
         type: 'link', 
         link_field: (row) => `/npu/${row.npu_id}` 
@@ -20,6 +20,6 @@ export const npuColumn: TableColumn[] = [
         type: 'text', 
         classNameCol: 'text-right w-[250px]', 
         className: 'text-right',
-        formatValue: (value: any) => `${value}MB`  
+        formatValue: (value: any) => `${value}GB`  
     },
 ]
