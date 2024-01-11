@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge'
-import Typography from '../../typography1';
+import Typography from '../../typography';
 
 interface Props {
     className?: string;

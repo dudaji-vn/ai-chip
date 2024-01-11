@@ -1,22 +1,22 @@
 'use client'
 
-import { BlockDataText, BlockDataWrapper } from '@/components/shared/block-data1'
-import BlockColumnChart from '@/components/shared/block-data1/block-column-chart1';
-import BlockGaugeChart from '@/components/shared/block-data1/block-gauge-chart1';
-import Table from '@/components/shared/table1'
+import { BlockDataText, BlockDataWrapper } from '@/components/shared/block-data'
+import BlockColumnChart from '@/components/shared/block-data/block-column-chart';
+import BlockGaugeChart from '@/components/shared/block-data/block-gauge-chart';
+import Table from '@/components/shared/table'
 import Series from '@/core/interfaces/series.interface';
 import React, { Fragment, memo, useCallback, useEffect } from 'react'
-import { Select } from '@/components/shared/form1';
+import { Select } from '@/components/shared/form';
 import { ClockIcon } from '@heroicons/react/24/solid';
 import { useAppDispatch, useAppSelector } from '@/stores';
 import useServerDetailApi from '@/core/hooks/api/use-server-detail-api';
 import useClusterApi from '@/core/hooks/api/use-cluster-api';
 import { changeCurrentUserId } from '@/stores/slice/global.slice';
-import Status from '@/components/shared/status1';
+import Status from '@/components/shared/status';
 import { gpuColumn, npuColumn } from '@/core/column';
-import Skeleton from '@/components/shared/skeleton1';
+import Skeleton from '@/components/shared/skeleton';
 import { useRouter } from 'next/navigation';
-import ChartEmpty from '@/components/shared/chart-empty1';
+import ChartEmpty from '@/components/shared/chart-empty';
 import { intervalTime } from '@/core/constant';
 
 const chartSeries: Series[] = [

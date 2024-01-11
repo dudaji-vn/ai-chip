@@ -1,9 +1,9 @@
 'use client'
 
-import Alert from '@/components/shared/alert1'
-import Button from '@/components/shared/button1'
-import { Input } from '@/components/shared/form1'
-import Typography from '@/components/shared/typography1'
+import Alert from '@/components/shared/alert'
+import Button from '@/components/shared/button'
+import { Input } from '@/components/shared/form'
+import Typography from '@/components/shared/typography'
 import { loginService } from '@/services/auth.service'
 import { RootState, useAppDispatch } from '@/stores'
 import { LockClosedIcon } from '@heroicons/react/24/solid'
