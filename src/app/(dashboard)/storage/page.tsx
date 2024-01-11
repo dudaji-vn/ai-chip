@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect } from 'react'
-import { Input, Select } from '@/components/shared/form'
-import Typography from '@/components/shared/typography'
+import { Input, Select } from '@/components/shared/form1'
+import Typography from '@/components/shared/typography1'
 import { ClockIcon, PlusIcon } from '@heroicons/react/24/solid'
-import Button from '@/components/shared/button'
+import Button from '@/components/shared/button1'
 import { TableColumn } from '@/core/interfaces'
-import Table from '@/components/shared/table'
+import Table from '@/components/shared/table1'
 import { toast } from '@/services/toast.service'
-import Modal from '@/components/shared/modal'; 
+import Modal from '@/components/shared/modal1'; 
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 
 const columns: TableColumn[] = [

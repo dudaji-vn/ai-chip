@@ -6,7 +6,7 @@ import { TrashIcon } from '@heroicons/react/24/solid';
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
-import Status from '../status';
+import Status from '../status1';
 
 interface Props {
     dataSource?: any[];
