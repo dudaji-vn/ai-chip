@@ -1,2 +1,2 @@
 export * from "./sidebar";
-export * from "./intervaltime";
+export * from "./interval-time";

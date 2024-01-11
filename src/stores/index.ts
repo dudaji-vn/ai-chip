@@ -2,7 +2,7 @@ import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
-import { rootReducer } from './rootReducer';
+import { rootReducer } from './root.reducer';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 const persistConfig = {

@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect } from 'react'
-import { Input, Select } from '@/components/shared/Form/'
-import Typography from '@/components/shared/Typography'
+import { Input, Select } from '@/components/shared/form'
+import Typography from '@/components/shared/typography'
 import { ClockIcon, PlusIcon } from '@heroicons/react/24/solid'
-import Button from '@/components/shared/Button'
+import Button from '@/components/shared/button'
 import { TableColumn } from '@/core/interfaces'
-import Table from '@/components/shared/Table'
+import Table from '@/components/shared/table'
 import { toast } from '@/services/toast.service'
-import Modal from '@/components/shared/Modal';
+import Modal from '@/components/shared/modal';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 
 const columns: TableColumn[] = [
@@ -37,10 +37,10 @@ export default function InterfaceEndpoint() {
 
     return (
         <div>
-            <div className='flex'>
+            <div className='flex flex-col md:flex-row gap-2'>
                 <Typography size='2xl' className='text-xl flex-1'>Inference endpoint</Typography>
                 <Select 
-                    className='w-[200px] mr-2'
+                    className='w-full md:w-[200px]'
                     placeholder='Last modified'
                     icon={<ClockIcon className='w-5 h-5' />}
                     type='secondary'
@@ -49,7 +49,7 @@ export default function InterfaceEndpoint() {
                         { label: 'Item 2', value: 'item-2' },
                     ]}
                 />
-                <Button className='flex gap-2 items-center' onClick={toggleModalCreate}>
+                <Button className='flex gap-2 items-center justify-center' onClick={toggleModalCreate}>
                     <span>New inference</span>
                     <PlusIcon className='w-5 h-5'></PlusIcon>
                 </Button>

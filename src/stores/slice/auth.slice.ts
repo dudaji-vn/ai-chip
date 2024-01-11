@@ -2,8 +2,6 @@ import { StoreName } from "@/core/enums/store.enum";
 import { User } from "@/core/interfaces/user.interface";
 import { createSlice } from "@reduxjs/toolkit";
 import { loginService } from "@/services/auth.service";
-import { setLoading } from "./global.slice";
-import { useDispatch } from "react-redux";
 
 interface AuthStoreType {
     isLoading: boolean;

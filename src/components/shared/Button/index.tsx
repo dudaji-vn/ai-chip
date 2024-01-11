@@ -16,6 +16,6 @@ export default function Button({ type = 'primary', className, children, ...props
         cancel_primary: 'py-[10px] px-5 text-center bg-gray-800 text-sm text-gray-400 border border-gray-700 rounded-sm hover:opacity-90 transition-all leading-none',
     }
     return (
-        <button className={`${types[type]} ${className}`} {...props}>{children}</button>
+        <button className={`whitespace-nowrap ${types[type]} ${className}`} {...props}>{children}</button>
     )
 }

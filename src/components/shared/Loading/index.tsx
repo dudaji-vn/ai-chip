@@ -1,2 +1,2 @@
-export * from "./GlobalLoading"
-export * from "./Loading"
+export * from "./global-loading"
+export * from "./loading"

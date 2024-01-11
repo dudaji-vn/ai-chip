@@ -1,19 +1,19 @@
 'use client'
 
-import { BlockDataText, BlockDataWrapper } from '@/components/shared/BlockData'
-import BlockColumnChart from '@/components/shared/BlockData/BlockColumnChart';
-import BlockGaugeChart from '@/components/shared/BlockData/BlockGaugeChart';
-import BlockLineChart from '@/components/shared/BlockData/BlockLineChart';
+import { BlockDataText, BlockDataWrapper } from '@/components/shared/block-data'
+import BlockColumnChart from '@/components/shared/block-data/block-column-chart';
+import BlockGaugeChart from '@/components/shared/block-data/block-gauge-chart';
+import BlockLineChart from '@/components/shared/block-data/block-line-chart';
 import Series from '@/core/interfaces/series.interface';
 import React, { Fragment, useCallback, useEffect } from 'react'
-import { Select } from '@/components/shared/Form';
+import { Select } from '@/components/shared/form';
 import { ClockIcon } from '@heroicons/react/24/solid';
-import useNpuApi from '@/core/hooks/api/useNpuApi';
+import useNpuApi from '@/core/hooks/api/use-npu-api';
 import { useAppDispatch, useAppSelector } from '@/stores';
-import useNpuDetailApi from '@/core/hooks/api/useNpuDetailApi';
+import useNpuDetailApi from '@/core/hooks/api/use-npu-detail-api';
 import { changeBreadcrumb, changeCurrentUserId } from '@/stores/slice/global.slice';
 import Link from 'next/link';
-import Skeleton from '@/components/shared/Skeleton';
+import Skeleton from '@/components/shared/skeleton';
 import { useRouter } from 'next/navigation';
 import { intervalTime } from '@/core/constant';
 
@@ -26,7 +26,7 @@ const chartSeries: Series[] = [
 ]
 const chartColumn: string[] = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
 
-export default function NPU({ params }: { params: { npuId: string } }) {
+export default function NPU({ params }: { params: { id: string } }) {
     const [npuRealtimeData, setNpuRealtimeData] = React.useState<any>({});
     const [timer, setTimer] = React.useState<null | number>(null);
 
@@ -37,7 +37,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
     const breadcrumb = useAppSelector(state => state.GlobalStore.breadcrumb);
     const user_id = useAppSelector(state => state.AuthStore.user?.id);
     
-    let npuId = params?.npuId || '';
+    let npuId = params?.id || '';
 
     const { isLoading: isLoadingListNpu, npus, isError: isErrorListNpu } = useNpuApi(current_user_id || user_id || '')
     const { isLoading, npu, isError } = useNpuDetailApi(npuId || '', timer)
@@ -53,10 +53,8 @@ export default function NPU({ params }: { params: { npuId: string } }) {
     }, [router])
 
     useEffect(() => {
-        if (npu && npu.user_id) {
-            if (current_user_id !== npu.user_id) {
-                dispatch(changeCurrentUserId(npu.user_id))
-            }
+        if (npu && npu.user_id && (current_user_id !== npu.user_id)) {
+            dispatch(changeCurrentUserId(npu.user_id))
         }
     }, [current_user_id, dispatch, npu])
 
@@ -74,25 +72,14 @@ export default function NPU({ params }: { params: { npuId: string } }) {
 
     useEffect(() => {
         if (!npu) return;
-        if(!timer) {
-            if(Object.keys(npuRealtimeData).length == 0 ) {
-                setNpuRealtimeData({ [new Date().getTime()]: npu });
+        setNpuRealtimeData((prev: any) => {
+            return {
+                ...prev,
+                [new Date().getTime()]: npu
             }
-            return;
-        }
+        })
 
-        let timerId = setInterval(() => {
-            setNpuRealtimeData((prev: any) => {
-                return {
-                    ...prev,
-                    [new Date().getTime()]: npu
-                }
-            })
-        }, timer);
-
-        return () => clearInterval(timerId);
-
-    }, [npu, npuRealtimeData, timer])
+    }, [npu])
 
     const onChangeTimer = (value: string | number) => {
         setTimer(parseInt(value.toString()))
@@ -102,10 +89,10 @@ export default function NPU({ params }: { params: { npuId: string } }) {
         <div className='flex flex-col gap-2'>
             {isLoadingListNpu && <NPUHeadSkeleton />}
             {!isLoadingListNpu && !isErrorListNpu &&
-                <div className='flex gap-2'>
+                <div className='flex gap-2 flex-col md:flex-row'>
                     <span className='px-5 py-[10px] rounded-sm border border-gray-600 text-blue-400 text-sm leading-none flex items-center justify-center'>NPUs</span>
                     <Select
-                        className='w-[346px]'
+                        className='w-full md:w-[346px]'
                         type='secondary'
                         placeholder={npu?.npu_device_name || 'Select NPU'}
                         options={npuList}
@@ -124,7 +111,7 @@ export default function NPU({ params }: { params: { npuId: string } }) {
             {!isLoading && !isError &&
                 <Fragment>
                     <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
-                        <BlockDataWrapper title='Name' className='col-span-2'>
+                        <BlockDataWrapper title='Name' className='md:col-span-2'>
                             <BlockDataText dataPrimary={npu?.npu_device_name}></BlockDataText>
                         </BlockDataWrapper>
                         <BlockDataWrapper title='Firmware Version'>

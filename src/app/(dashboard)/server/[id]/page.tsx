@@ -1,22 +1,22 @@
 'use client'
 
-import { BlockDataText, BlockDataWrapper } from '@/components/shared/BlockData'
-import BlockColumnChart from '@/components/shared/BlockData/BlockColumnChart';
-import BlockGaugeChart from '@/components/shared/BlockData/BlockGaugeChart';
-import Table from '@/components/shared/Table'
+import { BlockDataText, BlockDataWrapper } from '@/components/shared/block-data'
+import BlockColumnChart from '@/components/shared/block-data/block-column-chart';
+import BlockGaugeChart from '@/components/shared/block-data/block-gauge-chart';
+import Table from '@/components/shared/table'
 import Series from '@/core/interfaces/series.interface';
 import React, { Fragment, memo, useCallback, useEffect } from 'react'
-import { Select } from '@/components/shared/Form';
+import { Select } from '@/components/shared/form';
 import { ClockIcon } from '@heroicons/react/24/solid';
 import { useAppDispatch, useAppSelector } from '@/stores';
-import useServerDetailApi from '@/core/hooks/api/useServerDetailApi';
-import useClusterApi from '@/core/hooks/api/useClusterApi';
+import useServerDetailApi from '@/core/hooks/api/use-server-detail-api';
+import useClusterApi from '@/core/hooks/api/use-cluster-api';
 import { changeCurrentUserId } from '@/stores/slice/global.slice';
-import Status from '@/components/shared/Status';
+import Status from '@/components/shared/status';
 import { gpuColumn, npuColumn } from '@/core/column';
-import Skeleton from '@/components/shared/Skeleton';
+import Skeleton from '@/components/shared/skeleton';
 import { useRouter } from 'next/navigation';
-import ChartEmpty from '@/components/shared/ChartEmpty';
+import ChartEmpty from '@/components/shared/chart-empty';
 import { intervalTime } from '@/core/constant';
 
 const chartSeries: Series[] = [
@@ -28,14 +28,14 @@ const chartSeries: Series[] = [
 ]
 const chartColumn: string[] = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
 
-function Server({ params }: { params: { serverId: string } }) {
+function Server({ params }: { params: { id: string } }) {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const current_user_id = useAppSelector<string>(state => state.GlobalStore.current_user_id);
     const user_id = useAppSelector<string | undefined>(state => state.AuthStore.user?.id);
     const [timer, setTimer] = React.useState<number>(0);
 
-    let serverId = params?.serverId || '';
+    let serverId = params?.id || '';
 
     const { isLoading, server, isError } = useServerDetailApi(serverId || '', timer)
     const { isLoading: isLoadingCluster, cluster, isError: isErrorCluster } = useClusterApi(current_user_id || user_id || '')
@@ -60,10 +60,10 @@ function Server({ params }: { params: { serverId: string } }) {
         <div className='flex flex-col gap-2'>
             {isLoadingCluster && <ServerHeadSkeleton />}
             {!isLoadingCluster && !isErrorCluster && 
-                <div className='flex gap-2'>
+                <div className='flex gap-2 flex-col md:flex-row'>
                     <span className='px-5 py-[10px] rounded-sm border border-gray-600 text-blue-400 text-sm leading-none flex items-center justify-center'>Server IP</span>
                     <Select
-                        className='w-[346px]'
+                        className='w-full md:w-[346px]'
                         type='secondary'
                         placeholder={server?.server_ip || 'Select server IP'}
                         options={serverList}
@@ -152,7 +152,7 @@ function Server({ params }: { params: { serverId: string } }) {
                             <BlockColumnChart chartSeries={chartSeries} chartColumns={chartColumn} />
                         </BlockDataWrapper>
                     </div>
-                    <div className='grid grid-cols-2 gap-2 '>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-2 '>
                         <Table columns={gpuColumn} dataSource={server?.gpus} />
                         <Table columns={npuColumn} dataSource={server?.npus} />
                     </div>

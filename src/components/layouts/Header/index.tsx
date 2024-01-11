@@ -4,16 +4,16 @@ import { memo, useCallback, useState } from "react";
 import { usePathname } from "next/navigation";
 import { UsersIcon } from "@heroicons/react/24/outline";
 
-import Avatar from "@/components/shared/Avatar";
-import Breadcrumb from "@/components/shared/Breadcrumb";
-import Typography from "@/components/shared/Typography";
+import Avatar from "@/components/shared/avatar";
+import Breadcrumb from "@/components/shared/breadcrumb";
+import Typography from "@/components/shared/typography";
 import { Bars3CenterLeftIcon } from "@heroicons/react/24/solid";
-import Modal from "@/components/shared/Modal";
-import Button from "@/components/shared/Button";
+import Modal from "@/components/shared/modal";
+import Button from "@/components/shared/button";
 import { useAppDispatch, useAppSelector } from "@/stores";
 import { logout } from "@/stores/slice/auth.slice";
-import { Select } from "@/components/shared/Form";
-import useUserApi from "@/core/hooks/api/useUserApi";
+import { Select } from "@/components/shared/form";
+import useUserApi from "@/core/hooks/api/use-user-api";
 import { User } from "@/core/interfaces/user.interface";
 import { changeCurrentUserId } from "@/stores/slice/global.slice";
 

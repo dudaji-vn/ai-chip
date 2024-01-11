@@ -1,8 +1,8 @@
 'use client';
 
-import Header from "@/components/layouts/Header";
-import LeftSidebar from "@/components/layouts/LeftSideBar";
-import { GlobalLoading } from "@/components/shared/Loading";
+import Header from "@/components/layouts/header";
+import LeftSidebar from "@/components/layouts/left-side-bar";
+import { GlobalLoading } from "@/components/shared/loading";
 import { RootState } from "@/stores";
 import { useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
@@ -36,7 +36,7 @@ export default function DashboardLayout({ children }: Props) {
     
     return (
         <Suspense fallback={<GlobalLoading />}>
-            <div className='bg-gray-900 text-white min-h-screen pt-[80px] pb-20'>
+            <div className='bg-gray-900 text-white min-h-screen pt-[80px]'>
                 <Header toggleSidebar={toggleSidebar}/>
                 <main className={twMerge('w-full flex overflow-x-hidden page-container', isOpenSidebar ? 'sidebar-expand' : 'sidebar-collapse')}>
                     <LeftSidebar/>

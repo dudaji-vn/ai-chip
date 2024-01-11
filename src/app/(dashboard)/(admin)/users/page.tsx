@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useEffect } from 'react'
-import { Input, Select } from '@/components/shared/Form/'
-import Typography from '@/components/shared/Typography'
+import { Input, Select } from '@/components/shared/form'
+import Typography from '@/components/shared/typography'
 import { ClockIcon, PlusIcon } from '@heroicons/react/24/solid'
-import Button from '@/components/shared/Button'
+import Button from '@/components/shared/button'
 import { TableColumn } from '@/core/interfaces'
-import Table from '@/components/shared/Table'
+import Table from '@/components/shared/table'
 import { toast } from '@/services/toast.service'
-import Modal from '@/components/shared/Modal';
+import Modal from '@/components/shared/modal';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
-import useUserApi from '@/core/hooks/api/useUserApi';
-import Skeleton from '@/components/shared/Skeleton';
+import useUserApi from '@/core/hooks/api/use-user-api';
+import Skeleton from '@/components/shared/skeleton';
 import { userColumn } from '@/core/column';
 
 export default function UserPage() {
