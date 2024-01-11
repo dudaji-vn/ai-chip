@@ -1,9 +1,9 @@
 'use client'
 
 import React, { Fragment } from 'react'
-import Alert from '@/components/shared/alert1'
-import Avatar from '@/components/shared/avatar1'
-import Typography from '@/components/shared/typography1'
+import Alert from '@/components/shared/alert'
+import Avatar from '@/components/shared/avatar'
+import Typography from '@/components/shared/typography'
 import { loginService } from '@/services/auth.service'
 import { useAppDispatch } from '@/stores'
 import { UserCircleIcon } from '@heroicons/react/24/outline'

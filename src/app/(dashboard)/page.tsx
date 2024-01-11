@@ -1,17 +1,17 @@
 'use client'
 
-import { BlockDataText, BlockDataWrapper } from '@/components/shared/block-data1'
-import BlockColumnChart from '@/components/shared/block-data1/block-column-chart1';
-import BlockGaugeChart from '@/components/shared/block-data1/block-gauge-chart1';
-import Table from '@/components/shared/table1'
+import { BlockDataText, BlockDataWrapper } from '@/components/shared/block-data'
+import BlockColumnChart from '@/components/shared/block-data/block-column-chart';
+import BlockGaugeChart from '@/components/shared/block-data/block-gauge-chart';
+import Table from '@/components/shared/table'
 import Series from '@/core/interfaces/series.interface';
 import React from 'react'
-import { Select } from '@/components/shared/form1';
+import { Select } from '@/components/shared/form';
 import useClusterApi from '@/core/hooks/api/use-cluster-api';
 import { serverColumn } from '@/core/column';
 import { useAppSelector } from '@/stores';
-import Skeleton from '@/components/shared/skeleton1';
-import ChartEmpty from '@/components/shared/chart-empty1';
+import Skeleton from '@/components/shared/skeleton';
+import ChartEmpty from '@/components/shared/chart-empty';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import { intervalTime } from '@/core/constant';
 

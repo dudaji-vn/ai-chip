@@ -1,7 +1,7 @@
 'use client';
 
-import Button from "@/components/shared/button1";
-import Typography from "@/components/shared/typography1";
+import Button from "@/components/shared/button";
+import Typography from "@/components/shared/typography";
 import PAGES from "@/core/constant/pages";
 import { useRouter } from "next/navigation";
 import { Fragment } from "react";

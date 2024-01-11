@@ -1,8 +1,8 @@
 'use client';
 
-import Header from "@/components/layouts/header1";
-import LeftSidebar from "@/components/layouts/left-side-bar1";
-import { GlobalLoading } from "@/components/shared/loading1";
+import Header from "@/components/layouts/header";
+import LeftSidebar from "@/components/layouts/left-side-bar";
+import { GlobalLoading } from "@/components/shared/loading";
 import { RootState } from "@/stores";
 import { useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";

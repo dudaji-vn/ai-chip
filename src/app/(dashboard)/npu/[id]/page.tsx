@@ -1,19 +1,19 @@
 'use client'
 
-import { BlockDataText, BlockDataWrapper } from '@/components/shared/block-data1'
-import BlockColumnChart from '@/components/shared/block-data1/block-column-chart1';
-import BlockGaugeChart from '@/components/shared/block-data1/block-gauge-chart1';
-import BlockLineChart from '@/components/shared/block-data1/block-line-chart1';
+import { BlockDataText, BlockDataWrapper } from '@/components/shared/block-data'
+import BlockColumnChart from '@/components/shared/block-data/block-column-chart';
+import BlockGaugeChart from '@/components/shared/block-data/block-gauge-chart';
+import BlockLineChart from '@/components/shared/block-data/block-line-chart';
 import Series from '@/core/interfaces/series.interface';
 import React, { Fragment, useCallback, useEffect } from 'react'
-import { Select } from '@/components/shared/form1';
+import { Select } from '@/components/shared/form';
 import { ClockIcon } from '@heroicons/react/24/solid';
 import useNpuApi from '@/core/hooks/api/use-npu-api';
 import { useAppDispatch, useAppSelector } from '@/stores';
 import useNpuDetailApi from '@/core/hooks/api/use-npu-detail-api';
 import { changeBreadcrumb, changeCurrentUserId } from '@/stores/slice/global.slice';
 import Link from 'next/link';
-import Skeleton from '@/components/shared/skeleton1';
+import Skeleton from '@/components/shared/skeleton';
 import { useRouter } from 'next/navigation';
 import { intervalTime } from '@/core/constant';
 
