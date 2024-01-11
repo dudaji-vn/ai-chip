@@ -3,7 +3,7 @@
 import { BlockDataText, BlockDataWrapper } from '@/components/shared/block-data1'
 import BlockColumnChart from '@/components/shared/block-data1/block-column-chart1';
 import BlockGaugeChart from '@/components/shared/block-data1/block-gauge-chart1';
-import BlockLineChart from '@/components/shared/block-data1/block-line-chart';
+import BlockLineChart from '@/components/shared/block-data1/block-line-chart1';
 import Series from '@/core/interfaces/series.interface';
 import React, { Fragment, useCallback, useEffect } from 'react'
 import { Select } from '@/components/shared/form1';
