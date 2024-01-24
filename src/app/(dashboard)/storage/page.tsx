@@ -55,7 +55,7 @@ export default function Storage() {
                 className='w-full mt-4'
                 columns={columns}
                 dataSource={[
-                    {user_id: 'test', type: 'test', created_at: 'test', cpu: 'test'},
+                    {user_id: 'ai-chip-storage-1', type: 'minio', created_at: '2024-01-24'},
                 ]}
                 isShowDeleteAction={true}
                 deleteAction={tableDeleteAction}

@@ -15,9 +15,9 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     {
         icon: <CommandLineIcon className='w-6 h-6' />,
         text: 'Inference Endpoint',
-        link: '/interface-endpoint',
+        link: '/inference-endpoint',
         patterns: [
-            '^/interface-endpoint',
+            '^/inference-endpoint',
         ]
     },
     {

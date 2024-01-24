@@ -1,6 +1,5 @@
 'use client';
-
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input, Select } from '@/components/shared/form'
 import Typography from '@/components/shared/typography'
 import { ClockIcon, PlusIcon } from '@heroicons/react/24/solid'
@@ -10,6 +9,8 @@ import Table from '@/components/shared/table'
 import { toast } from '@/services/toast.service'
 import Modal from '@/components/shared/modal';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
+import { useInferenceApi } from '@/core/hooks/api/use-inference-endpoint-api';
+// import { InferenceApiService } from '@/services/api.inference.service';
 
 const columns: TableColumn[] = [
     { header: 'Name', field: 'name', type: 'text' },
@@ -19,11 +20,15 @@ const columns: TableColumn[] = [
     { header: '', field: 'cpu', type: 'action'},
 ]
 
-export default function InterfaceEndpoint() {
+export default function InferenceEndpoint() {
+    // const [inferences, setInferences] = useState([]);
     const [isOpenModalDelete, setIsOpenModalDelete] = React.useState(false);
     const [isOpenModalCreate, setIsOpenModalCreate] = React.useState(false);
     const toggleModalDelete = () => setIsOpenModalDelete(prev => !prev)
     const toggleModalCreate = () => setIsOpenModalCreate(prev => !prev)
+
+    // const { isLoading, data: endpoints, isError } = useInferenceApi()
+
 
     const deleteAction = (row: any) => {
         toast({ type: 'success', message: 'Delete success'})

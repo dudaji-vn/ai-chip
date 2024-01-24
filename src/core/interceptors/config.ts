@@ -9,7 +9,13 @@ const config = {
   timeout: 10000,
 }
 
+const inferenceConfig = {
+  baseURL: process.env.NEXT_PUBLIC_INFERENCE_URL + '/npu/api/',
+  timeout: 10000,
+}
+
 export const instance = axios.create(config)
+export const inferenceInstance = axios.create(inferenceConfig)
 
 instance.interceptors.request.use(
   successRequestInterceptor,
@@ -17,6 +23,17 @@ instance.interceptors.request.use(
 )
 
 instance.interceptors.response.use(
+  successResponseInterceptor,
+  errorResponseInterceptor
+)
+
+
+inferenceInstance.interceptors.request.use(
+  successRequestInterceptor,
+  errorRequestInterceptor
+)
+
+inferenceInstance.interceptors.response.use(
   successResponseInterceptor,
   errorResponseInterceptor
 )

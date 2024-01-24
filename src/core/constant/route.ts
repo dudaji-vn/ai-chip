@@ -23,11 +23,11 @@ export const ROUTE = {
             { label: 'NPU details' },
         ]
     },
-    'INTERFACE': {
-        path: '/interface-endpoint',
-        pattern: '/interface-endpoint',
+    'INFERENCE': {
+        path: '/inference-endpoint',
+        pattern: '/inference-endpoint',
         breadcrumb: [
-            { label: 'Interface endpoint' }
+            { label: 'Inference endpoint' }
         ]
     },
     'STORAGE': {
