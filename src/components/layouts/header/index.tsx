@@ -51,7 +51,7 @@ export default memo(function Header({ toggleSidebar } : Props)  {
             <div className="p-2 hover:bg-slate-700 rounded-md transition-all cursor-pointer" onClick={toggleSidebar}>
                 <Bars3CenterLeftIcon className="h-5 w-5 text-white"/>
             </div>
-            <Typography tag='h1' size="2xl" className="md:flex-none flex-1">OurApp</Typography>
+            <Typography tag='h1' size="2xl" className="md:flex-none flex-1">ChipPulse</Typography>
             <Breadcrumb />
             <div className="flex gap-4 flex-center items-center">
                 {userRole == 'admin' && pathname == '/' &&

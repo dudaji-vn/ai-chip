@@ -1,43 +1,99 @@
 'use client';
+
 import React, { useEffect, useState } from 'react'
 import { Input, Select } from '@/components/shared/form'
 import Typography from '@/components/shared/typography'
 import { ClockIcon, PlusIcon } from '@heroicons/react/24/solid'
 import Button from '@/components/shared/button'
-import { TableColumn } from '@/core/interfaces'
 import Table from '@/components/shared/table'
 import { toast } from '@/services/toast.service'
 import Modal from '@/components/shared/modal';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
-import { useInferenceApi } from '@/core/hooks/api/use-inference-endpoint-api';
-// import { InferenceApiService } from '@/services/api.inference.service';
+import useInferenceApi from '@/core/hooks/api/use-inference-endpoint-api';
+import { InferenceApiService } from '@/services/api.inference.service';
+import { inferenceEdnpointColumn } from '@/core/column/inference.column';
 
-const columns: TableColumn[] = [
-    { header: 'Name', field: 'name', type: 'text' },
-    { header: 'ai chip', field: 'ai_chip', type: 'text' },
-    { header: 'model version', field: 'model_version', type: 'text' },
-    { header: 'created at', field: 'created_at', type: 'text' },
-    { header: '', field: 'cpu', type: 'action'},
-]
+
 
 export default function InferenceEndpoint() {
-    // const [inferences, setInferences] = useState([]);
     const [isOpenModalDelete, setIsOpenModalDelete] = React.useState(false);
     const [isOpenModalCreate, setIsOpenModalCreate] = React.useState(false);
     const toggleModalDelete = () => setIsOpenModalDelete(prev => !prev)
     const toggleModalCreate = () => setIsOpenModalCreate(prev => !prev)
 
-    // const { isLoading, data: endpoints, isError } = useInferenceApi()
+    const [selectedChip, setSelectedChip] = useState('');
+    const [endpointToDelete, setEndpointToDelete] = useState(null);
 
+    const { isLoading, endpoints, isError, refetch } = useInferenceApi()
+    // if(isLoading) return <EndpointOverviewSkeleton />
+    // if(isError) return <ChartEmpty />
 
-    const deleteAction = (row: any) => {
-        toast({ type: 'success', message: 'Delete success'})
-        toggleModalDelete();
-    }
+    const parseEndpointData = (endpoint:any) => {
+        
+        const parts = endpoint.split('/');
+        const lastSegment = parts[parts.length - 2]; // Assuming the last segment is empty due to trailing slash
+        const [chip, modelVersion] = lastSegment.split('-');
+    
+        // Format the current date and time
+        const now = new Date();
+        const created_at = now.toLocaleDateString('en-CA'); // 'en-CA' locale uses the YYYY-MM-DD format
+    
+        return {
+            rawEndpoint: endpoint,
+            endpoint: (
+                <a href={`http://${endpoint}`} target="_blank" rel="noopener noreferrer">
+                    {endpoint}
+                </a>
+            ),
+            chip_type: chip,
+            model_version: modelVersion+"-v2", // Adjust the logic based on actual format
+            created_at: created_at // Set to the current datetime
+        };
+    };
+    
+    // Ensure endpoints is defined before mapping
+    const endpointDataSource = endpoints ? endpoints.map(parseEndpointData) : [];
 
-    const tableDeleteAction = (row: any) => {
-        toggleModalDelete();
-    }
+    const createAction = () => {
+        let data = { "npu_name": selectedChip };
+        InferenceApiService.post("create", data)
+            .then(() => {
+                toast({ type: 'success', message: 'Create success' });
+                // Trigger a refetch or update the list here
+                refetch()
+            })
+            .catch(/* handle error */)
+            .finally(() => {
+                toggleModalCreate();
+            });
+    };
+
+    const deleteAction = () => {
+        if (endpointToDelete) {
+            InferenceApiService.delete(`delete/${endpointToDelete}`)
+                .then(() => {
+                    toast({ type: 'success', message: 'Delete success' });
+                    // Additional logic to update the list, if necessary
+                    refetch()
+                })
+                .catch((error) => {
+                    toast({ type: 'error', message: 'Error deleting endpoint' });
+                    // Handle error
+                })
+                .finally(() => {
+                    setEndpointToDelete(null); // Reset the stored endpoint segment
+                    toggleModalDelete(); // Close the modal
+                });
+        }
+    };
+
+    const tableDeleteAction = (row:any) => {
+        const rawEndpoint = row.rawEndpoint;
+        const urlParts = rawEndpoint.split('/');
+        const lastSegment = urlParts[urlParts.length - 2];
+        setEndpointToDelete(lastSegment); // Store the segment to delete
+        toggleModalDelete(); // Open the modal
+    };
     
 
     return (
@@ -50,8 +106,8 @@ export default function InferenceEndpoint() {
                     icon={<ClockIcon className='w-5 h-5' />}
                     type='secondary'
                     options={[
-                        { label: 'Item 1', value: 'item-1' },
-                        { label: 'Item 2', value: 'item-2' },
+                        { label: 'Chip Type', value: 'Chip-Type' },
+                        { label: 'Recent Created', value: 'Recent-Created' },
                     ]}
                 />
                 <Button className='flex gap-2 items-center justify-center' onClick={toggleModalCreate}>
@@ -61,11 +117,8 @@ export default function InferenceEndpoint() {
             </div>
             <Table
                 className='w-full mt-4'
-                columns={columns}
-                dataSource={[
-                    {name: 'test', ai_chip: 'test', model_version: 'test', created_at: 'test', cpu: 'test'},
-                    {name: 'test1', ai_chip: 'test1', model_version: 'test1', created_at: 'test1', cpu: 'test1'},
-                ]}
+                columns={inferenceEdnpointColumn}
+                dataSource={endpointDataSource}
                 isShowDeleteAction={true}
                 deleteAction={tableDeleteAction}
             ></Table>
@@ -74,7 +127,7 @@ export default function InferenceEndpoint() {
             <Modal isOpen={isOpenModalDelete} onClose={toggleModalDelete} className='max-w-[360px]'>
                 <div className='flex flex-col gap-4 py-4 items-center mb-10 pb-0'>
                     <InformationCircleIcon className='w-[42px] h-[42px] text-gray-400'></InformationCircleIcon>
-                    <p className='text-gray-400 text-center'>Are you sure you want to delete this Storage ?</p>
+                    <p className='text-gray-400 text-center'>Are you sure you want to delete this Endpoint ?</p>
                 </div>
                 <div className='flex item-center gap-4'>
                     <Button type='danger' className='flex-1' onClick={deleteAction}>Yes, I’m sure</Button>
@@ -85,28 +138,27 @@ export default function InferenceEndpoint() {
             {/* Modal Create Endpoint */}
             <Modal isOpen={isOpenModalCreate} onClose={toggleModalCreate} title="New inference enpoint">
                 <form action="" className='pt-6 flex flex-col gap-6'>
-                    <Input 
-                        label="Endpoint name"
-                        placeholder='Input endpoint name'
-                    />
                     <Select 
                         label='Select Ai Chip'
                         placeholder='Choose AI chip'
                         options={[
-                            { label: 'Item 1', value: 'item-1' },
-                            { label: 'Item 2', value: 'item-2' },
+                            { label: 'Sapeon', value: 'sapeon' },
+                            { label: 'Furiosa', value: 'furiosa' },
+                            { label: 'Cpu', value: 'cpu' },
+                            { label: 'Gpu', value: 'gpu' },
                         ]}
+                        onChange={setSelectedChip}
                     />
                     <Select 
-                        label='Model version'
-                        placeholder='Choose model version'
+                        label='Model Type'
+                        placeholder='Choose model'
                         options={[
-                            { label: 'Yolo', value: 'yolo' },
+                            { label: 'ObjectDetection', value: 'objectdetection' },
                             { label: 'Classification', value: 'classification' },
                         ]}
                     />
                     <div className='flex gap-4 -mx-6 px-6 border-t border-gray-700 pt-6'>
-                        <Button className=''>Save</Button>
+                        <Button className='' onClick={createAction}>Save</Button>
                         <Button className='' type='cancel_primary' onClick={toggleModalCreate}>Cancel</Button>
                     </div>
                 </form>
@@ -115,3 +167,5 @@ export default function InferenceEndpoint() {
         </div>
     )
 }
+
+

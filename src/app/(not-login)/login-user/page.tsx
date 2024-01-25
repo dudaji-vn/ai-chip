@@ -26,7 +26,7 @@ export default function LoginUser() {
                 <Typography tag='h1' size="4xl">promitor</Typography>
                 <div>
                     <Typography tag='h2' size="xl" className="font-normal text-white mb-2">Choose an account</Typography>
-                    <p>to continue to <a href="#">OurApp</a></p>
+                    <p>to continue to <a href="#">ChipPulse</a></p>
                 </div>
             </div>
             <div className='pb-6'>

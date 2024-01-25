@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getInferenceServices } from "@/services/inference.service";
 
 export default function useInferenceApi(timer?: number) {
-    const { isLoading, data: endpoints, isError } = useQuery({ 
+    const { isLoading, data: endpoints, isError, refetch } = useQuery({ 
         queryKey: ['lists', ],
         // staleTime: timer ? 0 : Infinity,
         queryFn:()=> getInferenceServices(),
@@ -12,6 +12,7 @@ export default function useInferenceApi(timer?: number) {
     return {
         isLoading,
         endpoints,
-        isError
+        isError,
+        refetch,
     }
 }
