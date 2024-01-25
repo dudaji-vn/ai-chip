@@ -6,9 +6,12 @@ import Avatar from '@/components/shared/avatar'
 import Typography from '@/components/shared/typography'
 import { loginService } from '@/services/auth.service'
 import { useAppDispatch } from '@/stores'
-import { UserCircleIcon } from '@heroicons/react/24/outline'
+import { UserCircleIcon } from '@heroicons/react/24/outline' 
+
 
 export default function LoginUser() {
+
+    const basePath = process.env.BASE_PATH || ''; // Fallback to empty string if not defined
 
     const dispatch = useAppDispatch()
     const [alert, setAlert] = React.useState<string>('')
@@ -32,7 +35,7 @@ export default function LoginUser() {
             <div className='pb-6'>
                 <div onClick={() => handleLogin('user@dudaji.com')} className='flex gap-3 p-4 border-b border-gray-600 items-center transition-all cursor-pointer hover:bg-gray-700'>
                     <Avatar
-                        src='/images/avatar.png'
+                        src={`${basePath}/images/avatar.png`}
                         alt='Avatar'
                         className='mx-auto w-12 h-12'
                     ></Avatar>
@@ -43,7 +46,7 @@ export default function LoginUser() {
                 </div>
                 <div onClick={() => handleLogin('another_user@dudaji.com')} className='flex gap-3 p-4 border-b border-gray-600 items-center transition-all cursor-pointer hover:bg-gray-700'>
                     <Avatar
-                        src='/images/avatar.png'
+                        src={`${basePath}/images/avatar.png`}
                         alt='Avatar'
                         className='mx-auto w-12 h-12'
                     ></Avatar>
@@ -54,7 +57,7 @@ export default function LoginUser() {
                 </div>
                 <div onClick={() => handleLogin('ai-chip@gmail.com')} className='flex gap-3 p-4 border-b border-gray-600 items-center transition-all cursor-pointer hover:bg-gray-700'>
                     <Avatar
-                        src='/images/avatar.png'
+                        src={`${basePath}/images/avatar.png`}
                         alt='Avatar'
                         className='mx-auto w-12 h-12'
                     ></Avatar>

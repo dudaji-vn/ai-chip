@@ -22,6 +22,7 @@ interface Props {
 }
 
 export default memo(function Header({ toggleSidebar } : Props)  {
+    const basePath = process.env.BASE_PATH || ''; // Fallback to empty string if not defined
     const pathname = usePathname();
     const dispatch = useAppDispatch();
 
@@ -64,7 +65,7 @@ export default memo(function Header({ toggleSidebar } : Props)  {
                         onChange={handleChangeUser}
                     ></Select>
                 }
-                <Avatar src='/images/avatar.png' alt='Avatar'/>
+                <Avatar src={`${basePath}/images/avatar.png`} alt='Avatar'/>
                 <span className="max-h-8 h-8 w-[1px] bg-gray-700 block"></span>
                 <a className="font-medium cursor-pointer" onClick={toggleModalLogout}>Logout</a>
             </div>

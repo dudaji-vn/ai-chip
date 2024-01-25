@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: npu-dashboard
+  namespace: npu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: npu-dashboard
+  template:
+    metadata:
+      labels:
+        app: npu-dashboard
+    spec:
+      containers:
+        - name: npu-dashboard
+          image: registry.gocap.kr/npu/npu-dashboard:base-0.1
+          ports:
+            - name: http
+              containerPort: 3000

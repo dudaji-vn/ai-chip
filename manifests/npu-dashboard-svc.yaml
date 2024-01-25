@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: npu-dashboard
+  namespace: npu
+  labels:
+    app: npu-dashboard
+spec:
+  selector:
+    app: npu-dashboard
+  type: NodePort
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+      # nodePort: 30252

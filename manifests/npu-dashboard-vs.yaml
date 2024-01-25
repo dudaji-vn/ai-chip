@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: npu-dashboard
+  namespace: npu
+  labels:
+    app: npu-dashboard
+spec:
+  gateways:
+  - kubeflow/kubeflow-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        prefix: /npu/dashboard
+    rewrite:
+      uri: /npu/dashboard
+    route:
+    - destination:
+        host: npu-dashboard.npu.svc.cluster.local
+        port:
+          number: 3000

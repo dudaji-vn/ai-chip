@@ -2,11 +2,12 @@ import Image from 'next/image'
 import React from 'react'
 
 export default function ChartEmpty() {
+    const basePath = process.env.BASE_PATH || ''; // Fallback to empty string if not defined 
     return (
         <div className='flex flex-col items-center'>
             <div className='relative w-full max-w-[396px] min-h-[180px] h-auto mb-8'>
                 <Image
-                    src='/images/chart_empty.svg'
+                    src={`${basePath}/images/chart_empty.svg`}
                     alt='Chart Empty'
                     fill
                     priority
